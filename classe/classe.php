@@ -32,7 +32,7 @@ class Auth extends DbConnection {
                     ':Prenom' => $prenom,
                     ':Email' => $email
                 ]);
-            }elseif($role === 'visiteur'){
+            }else if($role === 'visiteur'){
                 $sqlvisit = "INSERT INTO user (id_user, Nom, Prenom, Email) VALUES (:id_user, :Nom, Prenom, :Email)";
                 $stmtvisit = $this->connection->prepare($sqlvisit );
                 $stmtvisit ->execute([
@@ -163,7 +163,7 @@ class Auth extends DbConnection {
 
 
 
-    
+
 
 
 ?>

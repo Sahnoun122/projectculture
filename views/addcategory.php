@@ -1,4 +1,21 @@
+<?php
+require_once '../classe/classe.php';
+require_once '../database/db.php';
 
+session_start();
+
+if (!isset($_SESSION['id_user']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    header("Location: connecter.php");
+    exit;
+}
+
+$admin_id = $_SESSION['id_user'];
+
+$db = new DbConnection();
+$pdo = $db->getConnection();
+$admin = new  Utilisateur($pdo);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

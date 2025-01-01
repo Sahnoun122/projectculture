@@ -1,34 +1,34 @@
 <?php
-// require_once '../models/classes.php';
-// require_once '../config/db.php';
+require_once '../classe/classes.php';
+require_once '../database/db.php';
 
-// session_start();
+session_start();
 
-// $auth = new Auth();
+$auth = new Auth();
 
-// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//     $email= $_POST['email'];
-//     $Motdepasse = $_POST['Motdepasse'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email= $_POST['email'];
+    $Motdepasse = $_POST['Motdepasse'];
 
-//     try {
-//         $user = $auth->login($username, $password);
-//         $_SESSION['id_user'] = $user['id_user'];
-//         $_SESSION['Email'] = $user['Email'];
-//         $_SESSION['role'] = $user['role'];
+    try {
+        $user = $auth->login($username, $password);
+        $_SESSION['id_user'] = $user['id_user'];
+        $_SESSION['Email'] = $user['Email'];
+        $_SESSION['role'] = $user['role'];
 
-//         if ($user['role'] === 'admin') {
-//             header('Location: dashadmin.php');
-//         } else if($user['role'] === 'user') {
-//             header('Location: dashuser.php');
-//         }else if($user['role'] === 'visiteur'){
-//             header('Location: dashvisit.php');
+        if ($user['role'] === 'admin') {
+            header('Location: dashadmin.php');
+        } else if($user['role'] === 'user') {
+            header('Location: dashuser.php');
+        }else if($user['role'] === 'visiteur'){
+            header('Location: dashvisit.php');
 
-//         }
-//         exit();
-//     } catch (Exception $e) {
-//         echo "Error: " . $e->getMessage();
-//     }
-// }
+        }
+        exit();
+    } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
+    }
+}
 ?>
 
 <!DOCTYPE html>
