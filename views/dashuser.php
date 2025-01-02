@@ -1,9 +1,9 @@
 <?php
+session_start();
 
-if (!isset($_SESSION['id_user']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'user') {
-    header("Location: connecter.php");
-    exit;
-}
+require_once '../classe/classe.php';
+require_once '../database/db.php';
+
 
 $admin_id = $_SESSION['id_user'];
 
