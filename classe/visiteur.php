@@ -2,7 +2,7 @@
 
     require_once '../classe/classe.php';
 
-    class Utilisateur extends User{
+    class Visiteur extends User{
 
 
         public function voirArticles(){
