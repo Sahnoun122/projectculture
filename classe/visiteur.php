@@ -5,7 +5,7 @@
     class Utilisateur extends User{
 
 
-        public function showArticles(){
+        public function voirArticles(){
             try {
                 $sql = "SELECT * FROM articles ORDER BY DateCréation DESC";
                 $stmt = $this->DbConnection->getConnection()->prepare($sql);
