@@ -1,9 +1,11 @@
 <?php
 
-session_start();
-
 require_once '../classe/classe.php';
 require_once '../database/db.php';
+
+session_start();
+
+
 $admin_id = $_SESSION['id_user'];
 
 $db = new DbConnection();
