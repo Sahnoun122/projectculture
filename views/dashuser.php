@@ -1,8 +1,4 @@
 <?php
-require_once '../classe/classe.php';
-require_once '../database/db.php';
-
-session_start();
 
 if (!isset($_SESSION['id_user']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'user') {
     header("Location: connecter.php");
@@ -13,26 +9,10 @@ $admin_id = $_SESSION['id_user'];
 
 $db = new DbConnection();
 $pdo = $db->getConnection();
-$admin = new  Utilisateur($pdo);
 
-// $admin_id = $_SESSION['user_id'];
 
-// $db = new DbConnection();
-// $pdo = $db->getConnection();
-// $admin = new User($pdo);
-
-// // Handle Reservation
-// if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reservation_id'], $_POST['action'])) {
-//     $reservationId = $_POST['reservation_id'];
-//     $action = $_POST['action'];
-//     $admin->updateReservationStatus($reservationId, $action);
-//     $_SESSION['message'] = "Reservation has been updated.";
-//     header("Location: adminDashboard.php");
-//     exit;
-// }
-
-// $reservations = $admin->getAllReservations();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

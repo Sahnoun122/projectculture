@@ -6,20 +6,19 @@ $auth = new Auth();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = $_POST['nom'];
-    $prenom= $_POST['prenom'];
-    $email = $_POST['email'];
-    $Motdepasse= $_POST['password'];
+    $prenom = $_POST['prenom'];
+    $email= $_POST['email'];
+    $Motdepasse = $_POST['Motdepasse'];
     $role = $_POST['role'];
 
     try {
-        $userId = $auth->register( $nom, $prenom, $email,$Motdepasse, $role);
+        $userId = $auth->register($nom,$prenom, $email ,$Motdepasse, $role);
         header('Location: connecter.php');
         exit();
     } catch (Exception $e) {
         echo "Error: " . $e->getMessage();
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -54,16 +53,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="flex flex-col items-start justify-start pt-10 pr-10 pb-10 pl-10 bg-white shadow-2xl rounded-xl relative z-10">
 
                 <form method="POST" action="register.php" class="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
-                    <!-- nom -->
+                    <!-- Name -->
                     <div class="relative">
                         <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Name</p>
-                        <input type="text" name="nom" placeholder="Name" class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
+                        <input type="text" name="nom" placeholder="nom" class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
                     </div>
 
-                    <!-- prenom -->
+                    <!-- Username -->
                     <div class="relative">
-                        <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Username</p>
-                        <input type="text" name="prenom" placeholder="Username" required class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
+                        <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Prenom</p>
+                        <input type="text" name="prenom" placeholder="prenom" required class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
                     </div>
 
                     <!-- Email -->
@@ -72,21 +71,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="email" name="email" placeholder="Example123@gmail.com" class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
                     </div>
 
-                   
-
+                    <!-- Phone -->
+                
                     <!-- Role -->
                     <div class="relative">
                         <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Role</p>
                         <select name="role" id="role" class="border focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md">
-                            <option value="user" class="text-gray-400">Artiste</option>
                             <option value="visiteur" class="text-gray-400">Visiteur</option>
+                            <option value="artiste" class="text-gray-400">Artiste</option>
                         </select>
                     </div>
 
                     <!-- Password -->
                     <div class="relative">
                         <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Password</p>
-                        <input type="password" name="password" placeholder="•••••••" required class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
+                        <input type="password" name="Motdepasse" placeholder="•••••••" required class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
                     </div>
 
                     <div class="relative">

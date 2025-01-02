@@ -1,47 +1,103 @@
 <?php
-
 require_once '../database/db.php';
+
+// class Auth extends DbConnection {
+
+//     public function register($nom, $prenom, $email, $password,$role = 'visiteur') {
+//         try {
+//             $this->connection->beginTransaction();
+
+//             if ($role === 'visiteur') {
+//                 $sqlvisiteur = "INSERT INTO user (id_user, Nom, Prenom, Email) VALUES (:id_user, :Nom, :Prenom, :Email)";
+//                 $stmtvisiteur = $this->connection->prepare( $sqlvisiteur );
+//                 $stmtvisiteur->execute([
+//                     ':id_user' => $id_user,
+//                     ':Nom' => $nom,
+//                     ':Prenom' => $prenom,
+//                     ':Email' => $email
+//                 ]);
+//             }
+
+//             $userId = $this->connection->lastInsertId();
+
+//             if ($role === 'user') {
+//                 $sqladmin = "INSERT INTO user (id_user, Nom, Prenom, Email) VALUES (:id_user, :Nom, :Prenom, :Email)";
+//                 $stmtadmin = $this->connection->prepare( $sqladmin );
+//                 $stmtadmin->execute([
+//                     ':id_user' => $id_user,
+//                     ':Nom' => $nom,
+//                     ':Prenom' => $prenom,
+//                     ':Email' => $email
+//                 ]);
+//             }
+//             // elseif ($role === 'user') {
+//             //     $sqlartiste = "INSERT INTO user (id_user, Nom, Prenom, Email) VALUES (:id_user, :Nom, :Prenom, :Email)";
+//             //     $stmtartiste = $this->connection->prepare  ( $sqlartiste );
+//             //     $stmtartiste ->execute([
+//             //         ':id_user' => $id_user,
+//             //         ':Nom' => $nom,
+//             //         ':Prenom' => $prenom,
+//             //         ':Email' => $email
+//             //     ]);
+//             // }
+
+//             $this->connection->commit();
+//             return $userId;
+//         } catch (Exception $e) {
+//             $this->connection->rollBack();
+//             throw new Exception("Registration failed. Please try again.");
+//         }
+//     }
+
+//     public function login($username, $password) {
+//         try {
+//             $sql = "SELECT id_user, Email, Motdepasse, Role FROM user WHERE Email = :Email";
+//             $stmt = $this->connection->prepare($sql);
+//             $stmt->execute([':Email' => $email]);
+//             $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+//             if (!$user || !password_verify($Motdepasse, $user['Motdepasse'])) {
+//                 throw new Exception("Login failed. Please check your credentials.");
+//             }
+
+//             return [
+//                 'id' => $user['id_user'],
+//                 'username' => $user['Email'],
+//                 'role' => $user['Role']
+//             ];
+//         } catch (Exception $e) {
+//             throw $e;
+//         }
+//     }
+// }
+
 
 class Auth extends DbConnection {
 
-    public function register( $nom, $prenom, $email,$Motdepasse, $role) {
-     
+    public function register($nom,$prenom, $email ,$Motdepasse, $role) {
         try {
+
+            $allowedRoles = ['admin', 'user', 'visiteur'];
+            if (!in_array($role, $allowedRoles)) {
+                throw new Exception("Invalid role provided.");
+            }
             $this->connection->beginTransaction();
 
-            $role = ($role === 'admin') ? 'admin' : 'user';
+            // $role = ($role === 'user') ? 'user' : 'visiteur';
 
             $hashedPassword = password_hash($Motdepasse, PASSWORD_BCRYPT);
 
-            $sqlamin = "INSERT INTO user (Email,  Motdepasse, Role) VALUES (:Email, : Motdepasse, :role)";
-            $stmtadmin = $this->connection->prepare($sqlamin );
-            $stmtadmin->execute([
+            $sqlUser = "INSERT INTO user (Nom , Prenom , Email, Motdepasse, Role) VALUES ( :Nom , :Prenom ,:Email, :Motdepasse, :role)";
+            $stmtUser = $this->connection->prepare($sqlUser);
+            $stmtUser->execute([
+                ':Nom' => $nom,
+                ':Prenom' => $prenom,
                 ':Email' => $email,
-                ':Motdepasse' => $hashedPassword,
+                ':Motdepasse' => $Motdepasse,
                 ':role' => $role
             ]);
 
             $userId = $this->connection->lastInsertId();
-
-            if ($role === 'user') {
-                $sqluser = "INSERT INTO user (id_user, Nom, Prenom, Email) VALUES (:id_user, :Nom, Prenom, :Email)";
-                $stmtuser = $this->connection->prepare($sqluser );
-                $stmtuser->execute([
-                    ':id_user' => $userId,
-                    ':Nom' => $nom,
-                    ':Prenom' => $prenom,
-                    ':Email' => $email
-                ]);
-            }else if($role === 'visiteur'){
-                $sqlvisit = "INSERT INTO user (id_user, Nom, Prenom, Email) VALUES (:id_user, :Nom, Prenom, :Email)";
-                $stmtvisit = $this->connection->prepare($sqlvisit );
-                $stmtvisit ->execute([
-                    ':id_user' => $userId,
-                    ':Nom' => $nom,
-                    ':Prenom' => $prenom,
-                    ':Email' => $email
-                ]);
-            }
 
             $this->connection->commit();
             return $userId;
@@ -50,7 +106,6 @@ class Auth extends DbConnection {
             throw new Exception("Registration failed. Please try again.");
         }
     }
-
 
     public function login($email, $Motdepasse) {
         try {
@@ -65,105 +120,12 @@ class Auth extends DbConnection {
 
             return [
                 'id_user' => $user['id_user'],
-                'email' => $user['email'],
+                'Email' => $user['Email'],
                 'role' => $user['Role']
             ];
         } catch (Exception $e) {
             throw $e;
         }
     }
-
-    }
-
-
-    class Utilisateur{
-       
-        private $pdo;
-        protected $id;
-        protected $nom;
-        protected $prenom;
-        protected $email;
-        protected $Motdepasse;
-        protected $role;
-    
-        public function __construct($pdo) {
-            $this->pdo = $pdo;
-        }
-    
-        public function setUser($id,$nom,$prenom, $email, $Motdepasse, $role) {
-            $this->id = $id;
-            $this->nom=$nom;
-            $this->prenom=$prenom;
-            $this->email = $email;
-            $this->Motdepasse= $Motdepasse;
-            $this->role = $role;
-        }
-    
-        public function getUserId() {
-            return $this->id;
-        }
-
-        public function getNom() {
-            return $this->nom;
-        }
-
-        public function getPrenom() {
-            return $this->prenom;
-        }
-
-        public function getEmail() {
-            return $this->email;
-        }
-        public function getMotdepasse() {
-            return $this->Motdepasse;
-        }
-        public function getUserRole() {
-            return $this->role;
-        }
-
-    }
-
-
-
-    class admin extends Utilisateur{
-         
-        public function creecategory(){
-
-        }
-
-        public function modifiercategory(){
-
-        }
-
-        public function supprimercategory(){
-
-        }
-
-       public function consultercategory(){
-
-       }
-
-       public function accepterarticle(){
-
-       }
-
-       public function refusearticle(){
-
-       }
-    }
-
-
-    class visiteur extends Utilisateur{
-
-    }
-
-    class acteur extends visiteur{
-
-    }
-
-
-
-
-
-
+}
 ?>

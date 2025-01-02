@@ -1,8 +1,5 @@
-<?php
-require_once '../classe/classe.php';
-require_once '../database/db.php';
 
-session_start();
+<?php
 
 if (!isset($_SESSION['id_user']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'visiteur') {
     header("Location: connecter.php");
@@ -13,26 +10,8 @@ $admin_id = $_SESSION['id_user'];
 
 $db = new DbConnection();
 $pdo = $db->getConnection();
-$admin = new  Utilisateur($pdo);
 
 
-// $logged_in_user_id = $_SESSION['user_id'];
-
-// $db = new DbConnection();
-// $pdo = $db->getConnection();
-// $member = new Member($pdo);
-
-// $user = $member->getMemberDetails($pdo, $logged_in_user_id);
-
-// $activities = $member->getActivities($pdo);
-
-// // Reserve Activity
-// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//     $activity_id = $_POST['activity_id'];
-//     $reservation_date = $_POST['reservation_date'];
-
-//     $member->bookActivity($pdo, $logged_in_user_id, $activity_id, $reservation_date);
-// }
 ?>
 
 <!DOCTYPE html>
