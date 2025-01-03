@@ -16,7 +16,7 @@
     
         public function ajouterArticle( $id_auteur ,$titre ,  $contenu ,$Image,$id_category){
             try{
-                $sql = 'INSERT INTO articles ( id_auteur , Titre, Contenu,Image, id_category) VALUES ( :id_auteur ,:Titre, :Contenu,:Image, :id_category)';
+                $sql = 'INSERT INTO articles  ( id_auteur , Titre, Contenu,Image, id_category ) VALUES ( :id_auteur ,:Titre, :Contenu,:Image, :id_category)';
                 $stmt = $this->db->prepare($sql);
                 $stmt->bindParam(":Titre", $titre, PDO::PARAM_STR);
                 $stmt->bindParam(":Image", $Image, PDO::PARAM_STR);

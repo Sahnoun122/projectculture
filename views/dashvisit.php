@@ -2,6 +2,11 @@
 <?php
 session_start();
 
+if (!isset($_SESSION['id_user']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'visiteur') {
+    header("Location: connecter.php");
+    exit;
+}
+
 require_once '../classe/classe.php';
 require_once '../database/db.php';
 
@@ -9,6 +14,7 @@ $admin_id = $_SESSION['id_user'];
 
 $db = new DbConnection();
 $pdo = $db->getConnection();
+
 
 
 ?>
@@ -93,6 +99,19 @@ $pdo = $db->getConnection();
 <div class="p-8 sm:ml-80">
 
     <h2 class="text-4xl font-semibold text-black mb-6">Reservations</h2>
+
+    
+<form class="max-w-sm mx-auto">
+  <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an option</label>
+  <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+    <option selected>Choose a country</option>
+    <option value="US">United States</option>
+    <option value="CA">Canada</option>
+    <option value="FR">France</option>
+    <option value="DE">Germany</option>
+  </select>
+</form>
+
 
     
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12" style="align-items: start;">

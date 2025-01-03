@@ -10,6 +10,11 @@ require_once '../classe/admin.php';
 session_start();
 
 
+if (!isset($_SESSION['id_user']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    header("Location: connecter.php");
+    exit;
+}
+
 $admin_id = $_SESSION['id_user'];
 
 $db = new DbConnection();

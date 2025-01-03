@@ -1,16 +1,43 @@
 <?php
 
 
+
 session_start();
+
+if (!isset($_SESSION['id_user']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'user') {
+    header("Location: connecter.php");
+    exit;
+}
+
+
+echo  $_SESSION['id_user'];
+
 
 require_once '../classe/classe.php';
 require_once '../database/db.php';
+require_once '../classe/article.php';
+require_once '../classe/artiste.php';
 
-
-$admin_id = $_SESSION['id_user'];
 
 $db = new DbConnection();
 $pdo = $db->getConnection();
+
+
+$article = new  Article($pdo);
+$use= new  Visiteur($pdo);
+
+
+if (isset($_POST['id_user'])) {
+    $id_auteur = $_POST['id_user'];
+} else {
+    
+    $id_auteur = null;
+}
+
+$toutarticles = $article-> afficherstatu();
+
+
+
 
 
 ?>
@@ -84,30 +111,26 @@ $pdo = $db->getConnection();
 <!-- Main -->
 <div class="p-8 sm:ml-80">
 
-    <h2 class="text-4xl font-semibold text-black mb-6">Reservations</h2>
+    <h2 class="text-4xl font-semibold text-black mb-6">Articles</h2>
     <div class="flex items-center justify-center overflow-x-auto shadow-lg rounded-lg" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
         <table class="min-w-full table-auto border-collapse bg-white">
             <thead class="bg-black">
                 <tr>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-white">Member</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-white">Activity</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-white">Reservation Date</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-white">Status</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-white">Actions</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-white">Titre</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-white">DateCreation</th>
+                    <th class="px-6 py-3 text-left text-sm font-medium text-white">Statu</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($reservations as $reservation): ?>
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="px-6 py-4 text-sm"><?php echo $reservation['MemberName']; ?></td>
-                        <td class="px-6 py-4 text-sm"><?php echo $reservation['ActivityName']; ?></td>
-                        <td class="px-6 py-4 text-sm"><?php echo $reservation['ResDate']; ?></td>
-                        <td class="px-6 py-4 text-sm"><?php echo $reservation['Status']; ?></td>
-                        <td class="px-6 py-4">
-                          
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
+                <?php 
+                    foreach($toutarticles  as $toutarticle ){
+                        echo '<tr class="border-b hover:bg-gray-50">
+                            <td class="px-6 py-4 text-sm">'.$toutarticle ['Titre'].'</td>
+                            <td class="px-6 py-4 text-sm">'.$toutarticle ['DateCreation'].'</td>
+                            <td class="px-6 py-4 text-sm">'.$toutarticle ['Statut'].'</td>
+                        </tr>';
+                    }
+                ?>
             </tbody>
         </table>
     </div>

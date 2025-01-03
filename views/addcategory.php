@@ -2,6 +2,10 @@
 <?php
 session_start();
 
+if (!isset($_SESSION['id_user']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    header("Location: connecter.php");
+    exit;
+}
 
 echo  $_SESSION['id_user'];
 
@@ -147,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
             <div class="p-6">
                 <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo $activity['Nom']; ?></h3>
 
-                
+
                 <form method="POST" onsubmit="return confirm('Are you sure you want to delete this activity?');">
                     <input type="hidden" name="delete" value="<?php echo $activity['Nom']; ?>">
                     <div class="flex items-center justify-center mt-4">
