@@ -14,7 +14,37 @@ $admin_id = $_SESSION['id_user'];
 
 $db = new DbConnection();
 $pdo = $db->getConnection();
-// $admin= new Admin();
+
+
+$user = new User($pdo);
+$admin = new Admin($pdo);
+
+if (isset($_POST['id_user'])) {
+    $id_admin = $_POST['id_user'];
+} else {
+    
+    $id_admin = null;
+}
+
+// Handle Reservation
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_article'], $_POST['action'])) {
+    $id_article = $_POST['id_article'];
+    $action = $_POST['action'];
+    $admin ->accepterArticle($id_article);
+    $_SESSION['message'] = "Reservation has been updated.";
+    header("Location: dashadmin.php");
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_article'], $_POST['actions'])) {
+    $id_article = $_POST['id_article'];
+    $action = $_POST['actions'];
+    $admin ->refuseArticle( $id_article);
+    $_SESSION['message'] = "Reservation has been rejecte.";
+
+    header("Location: dashadmin.php");
+    exit;
+}
 
 ?>
 
@@ -105,9 +135,9 @@ $pdo = $db->getConnection();
                 <img src="<?php echo $activity['Image']; ?>" alt="Activity Photo" class="w-full h-48 object-cover">
 
                      <form method="POST" action="" class="flex space-x-2">
-                                <input type="hidden" name="reservation_id" value="<?php echo $reservation['ResID']; ?>">
+                                <input type="hidden" name="id_article" value="<?php echo $activity['id_article']; ?>">
                                 <button name="action" value="accept" class="text-xl hover:scale-105">✅</button>
-                                <button name="action" value="reject" class="text-xl hover:scale-105">❌</button>
+                                <button name="actions" value="reject" class="text-xl hover:scale-105">❌</button>
                             </form>
             </div>
         </div>
