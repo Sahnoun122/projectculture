@@ -88,30 +88,36 @@ $pdo = $db->getConnection();
    </div>
 </aside>
 
-<div class="flex-1 ml-0 sm:ml-80 p-8">
 
-<h2 class="text-4xl font-semibold text-black mb-10"> Articles</h2>
+<!-- Main -->
+<div class="p-8 sm:ml-80">
 
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12 ml-20" style="align-items: start;">
-    <?php
-        $activities_sql = "SELECT * FROM articles";
-        $stmt_activities = $pdo->query($activities_sql);
-        $activities = $stmt_activities->fetchAll(PDO::FETCH_ASSOC);
+    <h2 class="text-4xl font-semibold text-black mb-6">Reservations</h2>
 
-    foreach ($activities as $activity):
-    ?>
-    <div class="bg-black shadow-lg rounded-lg overflow-hidden" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
-        <div class="p-6">
-            <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo $activity['Titre']; ?></h3>
-            <p class="text-lg text-white"><?php echo $activity['Contenu']; ?></p>
-            <img src="<?php echo $activity['Image']; ?>" alt="Activity Photo" class="w-full h-48 object-cover">
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12" style="align-items: start;">
+        <?php
+            $activities_sql = "SELECT * FROM articles";
+            $stmt_activities = $pdo->query($activities_sql);
+            $activities = $stmt_activities->fetchAll(PDO::FETCH_ASSOC);
 
-         
+        foreach ($activities as $activity):
+        ?>
+        <div class="bg-black shadow-lg rounded-lg overflow-hidden" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+            <div class="p-6">
+                <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo $activity['Titre']; ?></h3>
+                <p class="text-lg text-white"><?php echo $activity['Contenu']; ?></p>
+                <img src="<?php echo $activity['Image']; ?>" alt="Activity Photo" class="w-full h-48 object-cover">
+
+                    
+            </div>
         </div>
-    </div>
-    <?php endforeach; ?>
+        <?php endforeach; ?>
 
-</div>
+    </div>
+
+ 
+
 </div>
 
 <script>

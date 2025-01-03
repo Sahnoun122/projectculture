@@ -88,36 +88,34 @@ $pdo = $db->getConnection();
 <div class="p-8 sm:ml-80">
 
     <h2 class="text-4xl font-semibold text-black mb-6">Reservations</h2>
-    <div class="flex items-center justify-center overflow-x-auto shadow-lg rounded-lg" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
-        <table class="min-w-full table-auto border-collapse bg-white">
-            <thead class="bg-black">
-                <tr>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-white">Member</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-white">Activity</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-white">Reservation Date</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-white">Status</th>
-                    <th class="px-6 py-3 text-left text-sm font-medium text-white">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($reservations as $reservation): ?>
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="px-6 py-4 text-sm"><?php echo $reservation['MemberName']; ?></td>
-                        <td class="px-6 py-4 text-sm"><?php echo $reservation['ActivityName']; ?></td>
-                        <td class="px-6 py-4 text-sm"><?php echo $reservation['ResDate']; ?></td>
-                        <td class="px-6 py-4 text-sm"><?php echo $reservation['Status']; ?></td>
-                        <td class="px-6 py-4">
-                            <form method="POST" action="" class="flex space-x-2">
+
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12" style="align-items: start;">
+        <?php
+            $activities_sql = "SELECT * FROM articles";
+            $stmt_activities = $pdo->query($activities_sql);
+            $activities = $stmt_activities->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($activities as $activity):
+        ?>
+        <div class="bg-black shadow-lg rounded-lg overflow-hidden" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+            <div class="p-6">
+                <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo $activity['Titre']; ?></h3>
+                <p class="text-lg text-white"><?php echo $activity['Contenu']; ?></p>
+                <img src="<?php echo $activity['Image']; ?>" alt="Activity Photo" class="w-full h-48 object-cover">
+
+                     <form method="POST" action="" class="flex space-x-2">
                                 <input type="hidden" name="reservation_id" value="<?php echo $reservation['ResID']; ?>">
                                 <button name="action" value="accept" class="text-xl hover:scale-105">✅</button>
                                 <button name="action" value="reject" class="text-xl hover:scale-105">❌</button>
                             </form>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+            </div>
+        </div>
+        <?php endforeach; ?>
+
     </div>
+
+ 
 
 </div>
 
