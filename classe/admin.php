@@ -15,7 +15,7 @@ require_once '../classe/user.php';
         {
             $this->db = $db;
         }
-        
+
         public function voirCategory(){
             try {
                 $sql = "SELECT * FROM category";
@@ -49,8 +49,8 @@ require_once '../classe/user.php';
         
         public function modifieCategorie($id, $nom){
             try {
-                $sql = "UPDATE category SET Nom = :Nom  WHERE id_category = :id_category";
-                $stmt = $this->db->getConnection()->prepare($sql);
+                $sql = "UPDATE category SET Nom = :Nom  WHERE id_admin = :id_category";
+                $stmt = $this->db->prepare($sql);
                 $stmt->bindParam(":id_category", $id, PDO::PARAM_INT);
                 $stmt->bindParam(":Nom", $nom, PDO::PARAM_STR);
                 $stmt->execute();
@@ -63,8 +63,8 @@ require_once '../classe/user.php';
         
         public function supprimerCategorie($id){
             try {
-                $sql = "DELETE FROM category WHERE id_category= :id_category";
-                $stmt = $this->db->getConnection()->prepare($sql);
+                $sql = "DELETE FROM category WHERE id_admin= :id_category";
+                $stmt = $this->db->prepare($sql);
                 $stmt->bindParam(":id_category", $id, PDO::PARAM_INT);
                 $stmt->execute();
                 header("location: ../views/addcategory.php");
@@ -79,7 +79,7 @@ require_once '../classe/user.php';
         public function accepterArticle($id_article){
             try {
                 $sql = "UPDATE articles SET  Statut = 'Accepté' WHERE id_article = :id_article";
-                $stmt = $this->db->getConnection()->prepare($sql);
+                $stmt = $this->db->prepare($sql);
                 $stmt->bindParam(":id_article", $id_article, PDO::PARAM_INT);
                 $stmt->execute();
                 header("location: ../views/addcategory.php");
@@ -95,7 +95,7 @@ require_once '../classe/user.php';
         public function refuseArticle( $id_article){
             try {
                 $sql = "UPDATE articles SET  Statut = 'Refusé' WHERE id_article = :id_article";
-                $stmt = $this->db->getConnection()->prepare($sql);
+                $stmt = $this->db->prepare($sql);
                 $stmt->bindParam(":id_article", $id_article, PDO::PARAM_INT);
                 $stmt->execute();
                 header("location: ../views/addcategory.php");

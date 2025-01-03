@@ -3,17 +3,21 @@
 require_once '../database/db.php';
 
     class Article{
+        
         private  $id_article;
         private  $titre;
         private  $contenu;
         private  $DateCreation;
-        private $DbConnection;
 
-    
-        public function __construct(){
-            $this->DbConnection= new DbConnection();;
+        
+        private $db;
+        
+        public function __construct($db)
+        {
+            $this->db = $db;
         }
-
+    
+     
         
         public function getId(){
             return $this->id_article;
@@ -48,7 +52,7 @@ require_once '../database/db.php';
             try{
                 $query = "SELECT * FROM articles A JOIN category C ON A.id_category = C.id_category
                         JOIN user U ON U.id_user = A.id_auteur ORDER BY A.DateCreation DESC";
-                $stmt = $this->DbConnection->getConnection()->prepare($query);
+                $stmt = $this->db->prepare($query);
                 $stmt->execute();
                 if($stmt->rowCount() > 0){
                     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -64,7 +68,7 @@ require_once '../database/db.php';
         public function voirArticle( $id){
             try{
                 $query = "SELECT * FROM articles WHERE id_article = :id_article";
-                $stmt = $this->DbConnection->getConnection()->prepare($query);
+                $stmt = $this->db->prepare($query);
                 $stmt->bindValue(":id_article", (int)$id, PDO::PARAM_INT);
                 $stmt->execute();
                 if($stmt->rowCount() > 0){

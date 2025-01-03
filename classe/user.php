@@ -10,14 +10,13 @@ class User{
     protected $email;
     protected  $Motdepasse;
     protected PDO $role;
-    protected $DbConnection ;
 
-
-   
-        public function __construct(PDO $pdo) {
-            $this->role = $pdo;
-        }
-    
+    private $db;
+        
+    public function __construct($db)
+    {
+        $this->db = $db;
+    }
 
 
 
@@ -67,7 +66,7 @@ class User{
     
     public function user($id_user) {
         try{
-            $stmt = $this->DbConnection->getConnection()->prepare("SELECT * FROM user WHERE id_user = :id_user");
+            $stmt = $this->db->prepare("SELECT * FROM user WHERE id_user = :id_user");
         
             $stmt->bindValue(":id_user", (int)$id_user, PDO::PARAM_INT); 
         

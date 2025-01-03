@@ -2,51 +2,69 @@
 
 session_start();
 
+echo  $_SESSION['id_user'];
+
+
 require_once '../classe/classe.php';
 require_once '../database/db.php';
 require_once '../classe/article.php';
 require_once '../classe/artiste.php';
 
 
-if (isset($_POST['id_user'])) {
-    $id_admin = $_POST['id_user'];
-} else {
-    
-    $id_admin = null;
-}
-
 $db = new DbConnection();
 $pdo = $db->getConnection();
 
-// $admin = new artiste($pdo);
+
+$article = new  Auteur($pdo);
+$use= new  Visiteur($pdo);
+
+
+if (isset($_POST['id_user'])) {
+    $id_auteur = $_POST['id_user'];
+} else {
+    
+    $id_auteur = null;
+}
+
+
+
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Titre'])) {
-    
-    $Titre= $_POST['Titre'];
-    $Titre= $_POST['Contenu'];
-    $Titre= $_POST['Image'];
+    $id_auteur =  $_SESSION['id_user'];
+
+    $titre= $_POST['Titre'];
+    $contenu= $_POST['Contenu'];
+    $Image= $_POST['Image'];
+    $id_category = $_POST['id_category'];
+    $id_auteur =$_POST['id_auteur'];
 
    
-    $admin-> ajouterArticle($titre ,  $contenu ,$Image, $id_auteur,$id_category);
+    $article-> ajouterArticle(  $id_auteur ,$titre ,  $contenu ,$Image, $id_category);
 
-    header("Location: addcategory.php");
+    header("Location: addarticle.php");
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
-    $activityId = $_POST['delete'];
-    $admin->supprimerCategorie($id);
-    header("Location: addcategory.php");
-    exit;
-}
+// if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
+//     $id=  $_SESSION['id_user'];
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
-    $activityId = $_POST['modifie'];
-    $nom =$_POST['Nom'];
-    $admin->modifieCategorie($id, $nom);
-    header("Location: addcategory.php");
-    exit;
-}
+//     $activityId = $_POST['delete'];
+
+//     $article->supprimerCategorie($id);
+//     header("Location: addcategory.php");
+//     exit;
+// }
+
+// if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
+//     $id =  $_SESSION['id_user'];
+
+//     $activityId = $_POST['modifie'];
+//     $nom =$_POST['Nom'];
+//     $article->modifieCategorie($id, $nom);
+//     header("Location: addcategory.php");
+//     exit;
+// }
 
 
 
@@ -126,23 +144,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
 <!-- Main -->
 <div class="p-8 sm:ml-80">
 
-    <h2 class="text-4xl font-semibold text-black mb-10">Activities</h2>
+    <h2 class="text-4xl font-semibold text-black mb-10"> Articles</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12" style="align-items: start;">
         <?php
-            $activities_sql = "SELECT * FROM category";
+            $activities_sql = "SELECT * FROM articles";
             $stmt_activities = $pdo->query($activities_sql);
             $activities = $stmt_activities->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($activities as $activity):
         ?>
         <div class="bg-black shadow-lg rounded-lg overflow-hidden" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
-            <img src="<?php echo $activity['PhotoURL']; ?>" alt="Activity Photo" class="w-full h-48 object-cover">
             <div class="p-6">
-                <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo $activity['Name']; ?></h3>
-                <p class="text-lg text-white"><?php echo $activity['Description']; ?></p>
+                <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo $activity['Titre']; ?></h3>
+                <p class="text-lg text-white"><?php echo $activity['Contenu']; ?></p>
+                <img src="<?php echo $activity['Image']; ?>" alt="Activity Photo" class="w-full h-48 object-cover">
+
                 <form method="POST" onsubmit="return confirm('Are you sure you want to delete this activity?');">
-                    <input type="hidden" name="delete_activity_id" value="<?php echo $activity['ActivityID']; ?>">
+                    <input type="hidden" name="delete_activity_id" value="<?php echo $activity['id_user']; ?>">
                     <div class="flex items-center justify-center mt-4">
                         <button type="submit" class="text-xl hover:scale-105">🗑️</button>
                     </div>
@@ -162,21 +181,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
                     <div class="relative">
                         <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
                             absolute">Titre</p>
-                        <input type="text" id="activityName" name="Titre" required class="border placeholder-gray-400 focus:outline-none
+                        <input type="text" id="Titre" name="Titre" required class="border placeholder-gray-400 focus:outline-none
                             focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
                             border-gray-300 rounded-md"/>
                     </div>
                     <div class="relative">
                         <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
                             absolute">Contenu</p>
-                        <textarea id="activityDescription" name="Contenu" rows="3" required class="border placeholder-gray-400 focus:outline-none
+                        <textarea id="Contenu" name="Contenu" rows="3" required class="border placeholder-gray-400 focus:outline-none
                             focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
                             border-gray-300 rounded-md"></textarea>
                     </div>
                     <div class="relative">
                         <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
                             absolute">Image</p>
-                        <input type="URL" id="activityImg" name="Image" required class="border placeholder-gray-400 focus:outline-none
+                        <input type="URL" id="Image" name="Image" required class="border placeholder-gray-400 focus:outline-none
                             focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
                             border-gray-300 rounded-md"/>
                     </div>

@@ -6,11 +6,18 @@
 
     class Auteur extends  Visiteur{
 
+        private $db;
+        
+        public function __construct($db)
+        {
+            $this->db = $db;
+        }
+
     
-        public function ajouterArticle($titre ,  $contenu ,$Image, $id_auteur,$id_category){
+        public function ajouterArticle( $id_auteur ,$titre ,  $contenu ,$Image,$id_category){
             try{
-                $sql = 'INSERT INTO articles (Titre, Contenu,Image, id_auteur, id_category) VALUES (:Titre, :Contenu,:Image, :id_auteur, :id_category)';
-                $stmt = $this->DbConnection->getConnection()->prepare($sql);
+                $sql = 'INSERT INTO articles ( id_auteur , Titre, Contenu,Image, id_category) VALUES ( :id_auteur ,:Titre, :Contenu,:Image, :id_category)';
+                $stmt = $this->db->prepare($sql);
                 $stmt->bindParam(":Titre", $titre, PDO::PARAM_STR);
                 $stmt->bindParam(":Image", $Image, PDO::PARAM_STR);
                 $stmt->bindParam(":Contenu", $contenu, PDO::PARAM_STR);
@@ -31,7 +38,7 @@
         public function modifierArticle($id_article, $titre , $contenu, $id_category){
             try{
                 $sql = "UPDATE articles SET Titre = :Titre, Contenu = :Contenu, id_category = :id_category WHERE id_article = :id_article";
-                $stmt = $this->DbConnection->getConnection()->prepare($sql);
+                $stmt = $this->db->prepare($sql);
                 $stmt->bindParam(":titre", $titre, PDO::PARAM_STR);
                 $stmt->bindParam(":contenu", $contenu, PDO::PARAM_STR);
                 $stmt->bindParam(":id_category", $id_category, PDO::PARAM_INT);
@@ -49,7 +56,7 @@
         public function supprimerArticle( $id_article){
             try{
                 $sql = "DELETE FROM articles WHERE id_article = :id_article";
-                $stmt = $this->DbConnection->getConnection()->prepare($sql);
+                $stmt = $this->db->prepare($sql);
                 $stmt->bindParam(":id_article", $id_article, PDO::PARAM_INT);
                 $stmt->execute();
 

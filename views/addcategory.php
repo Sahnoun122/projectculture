@@ -49,8 +49,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
+
     $activityId = $_POST['modifie'];
     $nom =$_POST['Nom'];
+    $id =  $_SESSION['id_user'];
+
     $admin->modifieCategorie($id, $nom);
     header("Location: addcategory.php");
     exit;
