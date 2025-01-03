@@ -53,7 +53,7 @@ $pdo = $db->getConnection();
             <?php if ($user): ?>
                 <a href="#" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-100 hover:text-black group">
                     <img class="flex-shrink-0 w-8 h-8" src="">
-                    <span class="flex-1 ms-3 whitespace-nowrap"><?php echo $user['Name']; ?> &#128994;</span>
+                    <span class="flex-1 ms-3 whitespace-nowrap"><?php echo $user['Nom']; ?> &#128994;</span>
                 </a>
             <?php else: ?>
                 <p class="text-base text-red-500">User not found.</p>
@@ -89,30 +89,29 @@ $pdo = $db->getConnection();
 </aside>
 
 <div class="flex-1 ml-0 sm:ml-80 p-8">
-    <h2 class="text-4xl font-semibold text-black mb-10">Find & Book your Activity</h2>
 
+<h2 class="text-4xl font-semibold text-black mb-10"> Articles</h2>
 
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12 ml-20" style="align-items: start;">
+    <?php
+        $activities_sql = "SELECT * FROM articles";
+        $stmt_activities = $pdo->query($activities_sql);
+        $activities = $stmt_activities->fetchAll(PDO::FETCH_ASSOC);
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" style="align-items: start;">
-        <?php foreach($activities as $activity): ?>
-            <div class="bg-black shadow-lg rounded-lg overflow-hidden" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
-                <img src="<?php echo $activity['PhotoURL']; ?>" alt="Activity Photo" class="w-full h-48 object-cover">
-                <div class="p-6">
-                    <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo $activity['Name']; ?></h3>
-                    <p class="text-lg text-white"><?php echo $activity['Description']; ?></p>
+    foreach ($activities as $activity):
+    ?>
+    <div class="bg-black shadow-lg rounded-lg overflow-hidden" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+        <div class="p-6">
+            <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo $activity['Titre']; ?></h3>
+            <p class="text-lg text-white"><?php echo $activity['Contenu']; ?></p>
+            <img src="<?php echo $activity['Image']; ?>" alt="Activity Photo" class="w-full h-48 object-cover">
 
-                    <form method="POST" action="" class="mt-4">
-                        <input type="hidden" name="activity_id" value="<?php echo $activity['ActivityID']; ?>">
-                        <div class="flex items-center space-x-4">
-                            <input type="datetime-local" name="reservation_date" required class="p-2 border border-gray-300 rounded-md w-full">
-                            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Book</button>
-                        </div>
-                    </form>
-
-                </div>
-            </div>
-        <?php endforeach; ?>
+         
+        </div>
     </div>
+    <?php endforeach; ?>
+
+</div>
 </div>
 
 <script>

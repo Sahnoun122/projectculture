@@ -146,6 +146,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
         <div class="bg-black shadow-lg rounded-lg overflow-hidden" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
             <div class="p-6">
                 <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo $activity['Nom']; ?></h3>
+
+                
                 <form method="POST" onsubmit="return confirm('Are you sure you want to delete this activity?');">
                     <input type="hidden" name="delete" value="<?php echo $activity['Nom']; ?>">
                     <div class="flex items-center justify-center mt-4">

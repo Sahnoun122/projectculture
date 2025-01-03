@@ -1,5 +1,6 @@
 <?php
 
+
 session_start();
 
 echo  $_SESSION['id_user'];
@@ -46,15 +47,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Titre'])) {
     exit;
 }
 
-// if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
-//     $id=  $_SESSION['id_user'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
 
-//     $activityId = $_POST['delete'];
+    $id_article = $_POST['delete'];
 
-//     $article->supprimerCategorie($id);
-//     header("Location: addcategory.php");
-//     exit;
-// }
+    $article-> supprimerArticle($id_article);
+
+    header("Location: addarticle.php");
+    exit;
+}
 
 // if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
 //     $id =  $_SESSION['id_user'];
@@ -125,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Titre'])) {
                <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
                   <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
                </svg>
-               <span class="ms-3">Activities</span>
+               <span class="ms-3">Articles</span>
             </a>
         </li>
         <li>
@@ -160,8 +161,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Titre'])) {
                 <p class="text-lg text-white"><?php echo $activity['Contenu']; ?></p>
                 <img src="<?php echo $activity['Image']; ?>" alt="Activity Photo" class="w-full h-48 object-cover">
 
-                <form method="POST" onsubmit="return confirm('Are you sure you want to delete this activity?');">
-                    <input type="hidden" name="delete_activity_id" value="<?php echo $activity['id_user']; ?>">
+                <form method="POST" onsubmit="return confirm('Are you sure you want to delete this article?');">
+                    <input type="hidden" name="delete" value="<?php echo $activity['id_article']; ?>">
                     <div class="flex items-center justify-center mt-4">
                         <button type="submit" class="text-xl hover:scale-105">🗑️</button>
                     </div>
@@ -172,7 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Titre'])) {
 
     </div>
 
-    <h2 class="text-4xl font-semibold text-black mb-6">Add New category</h2>
+    <h2 class="text-4xl font-semibold text-black mb-6">Add New Articles</h2>
     <div class="flex items-center justify-center my-8 bg-gray-100">
         <div class="w-full mx-0 relative z-10 max-w-2xl lg:mt-0 lg:w-5/12">
             <div class="p-10 bg-white shadow-2xl rounded-xl relative z-10" data-aos="fade-right">

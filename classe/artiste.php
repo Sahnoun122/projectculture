@@ -35,14 +35,17 @@
 
 
         // MODIFY ARTICLE METHOD
-        public function modifierArticle($id_article, $titre , $contenu, $id_category){
+        public function modifierArticle( $id_auteur ,$titre ,  $contenu ,$Image,$id_category){
             try{
-                $sql = "UPDATE articles SET Titre = :Titre, Contenu = :Contenu, id_category = :id_category WHERE id_article = :id_article";
+                $sql = "UPDATE articles SET Titre = :Titre, Contenu , Image= :Contenu, :id_category , :Image = :id_category WHERE id_article = :id_article";
                 $stmt = $this->db->prepare($sql);
                 $stmt->bindParam(":titre", $titre, PDO::PARAM_STR);
                 $stmt->bindParam(":contenu", $contenu, PDO::PARAM_STR);
+                $stmt->bindParam(":Image", $contenu, PDO::PARAM_STR);
+
+
                 $stmt->bindParam(":id_category", $id_category, PDO::PARAM_INT);
-                $stmt->bindParam(":id_article", $id_article, PDO::PARAM_INT);
+                $stmt->bindParam(":id_article", $id_auteur, PDO::PARAM_INT);
                 $stmt->execute();
 
                 header("location: ../views/addarticle.php");
