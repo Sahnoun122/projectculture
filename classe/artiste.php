@@ -7,7 +7,7 @@
     class Auteur extends  Visiteur{
 
     
-        public function ajouterArticle(string $titre , string $contenu, int $id_auteur, int $id_category){
+        public function ajouterArticle($titre ,  $contenu, $id_auteur,$id_category){
             try{
                 $sql = 'INSERT INTO articles (Titre, Contenu, id_auteur, id_category) VALUES (:Titre, :Contenu, :id_auteur, :id_category)';
                 $stmt = $this->DbConnection->getConnection()->prepare($sql);
@@ -26,7 +26,7 @@
 
 
         // MODIFY ARTICLE METHOD
-        public function modifierArticle(int $id_article, string $titre , string $contenu, int $id_category){
+        public function modifierArticle($id_article, $titre , $contenu, $id_category){
             try{
                 $sql = "UPDATE articles SET Titre = :Titre, Contenu = :Contenu, id_category = :id_category WHERE id_article = :id_article";
                 $stmt = $this->DbConnection->getConnection()->prepare($sql);
@@ -44,7 +44,7 @@
         
 
         // DELETE ARTICLE METHOD
-        public function supprimerArticle(int $id_article){
+        public function supprimerArticle( $id_article){
             try{
                 $sql = "DELETE FROM articles WHERE id_article = :id_article";
                 $stmt = $this->DbConnection->getConnection()->prepare($sql);

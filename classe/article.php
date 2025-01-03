@@ -44,7 +44,7 @@ require_once '../database/db.php';
         }
 
 
-        public function allArticles(){
+        public function toutArticles(){
             try{
                 $query = "SELECT * FROM articles A JOIN category C ON A.id_category = C.id_category
                         JOIN user U ON U.id_user = A.id_auteur ORDER BY A.DateCreation DESC";
@@ -61,7 +61,7 @@ require_once '../database/db.php';
             }
         }
 
-        public function showArticle( $id){
+        public function voirArticle( $id){
             try{
                 $query = "SELECT * FROM articles WHERE id_article = :id_article";
                 $stmt = $this->DbConnection->getConnection()->prepare($query);

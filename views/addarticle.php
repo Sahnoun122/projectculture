@@ -4,8 +4,16 @@ session_start();
 
 require_once '../classe/classe.php';
 require_once '../database/db.php';
+require_once '../classe/article.php';
+require_once '../classe/artiste.php';
 
-$admin_id = $_SESSION['id_user'];
+
+if (isset($_POST['id_user'])) {
+    $id_admin = $_POST['id_user'];
+} else {
+    
+    $id_admin = null;
+}
 
 $db = new DbConnection();
 $pdo = $db->getConnection();

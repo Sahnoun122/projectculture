@@ -21,12 +21,12 @@ $admin = new Admin($pdo);
 
 
 
-// if (isset($_POST['id_user'])) {
-//     $id_admin = $_POST['id_user'];
-// } else {
-//     // Handle the case where 'id_admin' is not set
-//     $id_admin = null;
-// }
+if (isset($_POST['id_user'])) {
+    $id_admin = $_POST['id_user'];
+} else {
+    
+    $id_admin = null;
+}
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Nom'])) {
