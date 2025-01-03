@@ -2,19 +2,19 @@
 <?php
 session_start();
 
+
+echo  $_SESSION['id_user'];
+
+
 require_once '../classe/classe.php';
 require_once '../database/db.php';
 require_once '../classe/admin.php';
 require_once '../classe/user.php';
 
-
-// $admin_id = $_SESSION['id_user'];
-
 $db = new DbConnection();
 $pdo = $db->getConnection();
 
-// $admin = new Admin($pdo);
-// $connection = $admin->getConnection();
+
 
 $user = new User($pdo);
 $admin = new Admin($pdo);
@@ -31,8 +31,9 @@ if (isset($_POST['id_user'])) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Nom'])) {
     $nom = $_POST['Nom'];
+    $user_id =  $_SESSION['id_user'];
    
-    $admin-> ajouterCategorie($id_admin, $nom);
+    $admin-> ajouterCategorie($user_id, $nom);
 
     header("Location: addcategory.php");
     exit;
@@ -40,6 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Nom'])) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
     $activityId = $_POST['delete'];
+    $id =  $_SESSION['id_user'];
+
     $admin->supprimerCategorie($id);
     header("Location: addcategory.php");
     exit;

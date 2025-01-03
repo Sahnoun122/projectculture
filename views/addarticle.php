@@ -18,6 +18,38 @@ if (isset($_POST['id_user'])) {
 $db = new DbConnection();
 $pdo = $db->getConnection();
 
+// $admin = new artiste($pdo);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Titre'])) {
+    
+    $Titre= $_POST['Titre'];
+    $Titre= $_POST['Contenu'];
+    $Titre= $_POST['Image'];
+
+   
+    $admin-> ajouterArticle($titre ,  $contenu ,$Image, $id_auteur,$id_category);
+
+    header("Location: addcategory.php");
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
+    $activityId = $_POST['delete'];
+    $admin->supprimerCategorie($id);
+    header("Location: addcategory.php");
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
+    $activityId = $_POST['modifie'];
+    $nom =$_POST['Nom'];
+    $admin->modifieCategorie($id, $nom);
+    header("Location: addcategory.php");
+    exit;
+}
+
+
+
 
 
 
@@ -129,25 +161,25 @@ $pdo = $db->getConnection();
                 <form method="POST" class="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
                     <div class="relative">
                         <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
-                            absolute">category Name</p>
-                        <input type="text" id="activityName" name="category" required class="border placeholder-gray-400 focus:outline-none
+                            absolute">Titre</p>
+                        <input type="text" id="activityName" name="Titre" required class="border placeholder-gray-400 focus:outline-none
                             focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
                             border-gray-300 rounded-md"/>
                     </div>
-                    <!-- <div class="relative">
+                    <div class="relative">
                         <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
-                            absolute">Description</p>
-                        <textarea id="activityDescription" name="activityDescription" rows="3" required class="border placeholder-gray-400 focus:outline-none
+                            absolute">Contenu</p>
+                        <textarea id="activityDescription" name="Contenu" rows="3" required class="border placeholder-gray-400 focus:outline-none
                             focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
                             border-gray-300 rounded-md"></textarea>
                     </div>
                     <div class="relative">
                         <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
                             absolute">Image</p>
-                        <input type="text" id="activityImg" name="activityImg" required class="border placeholder-gray-400 focus:outline-none
+                        <input type="URL" id="activityImg" name="Image" required class="border placeholder-gray-400 focus:outline-none
                             focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
                             border-gray-300 rounded-md"/>
-                    </div> -->
+                    </div>
                     <div class="relative">
                         <button type="submit" class="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-green-500
                             rounded-lg transition duration-200 hover:bg-green-600 ease">Add category</button>

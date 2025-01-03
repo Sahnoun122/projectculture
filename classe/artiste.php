@@ -7,12 +7,14 @@
     class Auteur extends  Visiteur{
 
     
-        public function ajouterArticle($titre ,  $contenu, $id_auteur,$id_category){
+        public function ajouterArticle($titre ,  $contenu ,$Image, $id_auteur,$id_category){
             try{
-                $sql = 'INSERT INTO articles (Titre, Contenu, id_auteur, id_category) VALUES (:Titre, :Contenu, :id_auteur, :id_category)';
+                $sql = 'INSERT INTO articles (Titre, Contenu,Image, id_auteur, id_category) VALUES (:Titre, :Contenu,:Image, :id_auteur, :id_category)';
                 $stmt = $this->DbConnection->getConnection()->prepare($sql);
                 $stmt->bindParam(":Titre", $titre, PDO::PARAM_STR);
+                $stmt->bindParam(":Image", $Image, PDO::PARAM_STR);
                 $stmt->bindParam(":Contenu", $contenu, PDO::PARAM_STR);
+
                 $stmt->bindParam(":id_auteur", $id_auteur, PDO::PARAM_INT);
                 $stmt->bindParam(":id_category", $id_category, PDO::PARAM_INT);
                 $stmt->execute();
