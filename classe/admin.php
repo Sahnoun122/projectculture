@@ -1,6 +1,10 @@
 <?php
 
+
+require_once '../database/db.php';
 require_once '../classe/classe.php';
+require_once '../classe/user.php';
+
 
     class Admin extends User{
 
@@ -22,12 +26,12 @@ require_once '../classe/classe.php';
         }
 
     
-        public function ajouterCategorie(int $id_admin, string $nom){
+        public function ajouterCategorie( $id_admin, $nom){
             try {
-                $sql = "INSERT INTO category (id_admin, nom_category, description) VALUES (:id_admin, :nom)";
+                $sql = "INSERT INTO category (id_admin, Nom) VALUES (:id_admin, :Nom)";
                 $stmt = $this->DbConnection->getConnection()->prepare($sql);
                 $stmt->bindParam(":id_admin", $id_admin, PDO::PARAM_INT);
-                $stmt->bindParam(":nom", $nom, PDO::PARAM_STR);
+                $stmt->bindParam(":Nom", $nom, PDO::PARAM_STR);
                 $stmt->execute();
                 header("location: ../views/addcategory.php");
             } catch (PDOException $e) {
@@ -36,12 +40,12 @@ require_once '../classe/classe.php';
         }
 
         
-        public function modifieCategorie(int $id, string $nom){
+        public function modifieCategorie($id, $nom){
             try {
-                $sql = "UPDATE category SET nom = :nom  WHERE id_category = :id_category";
+                $sql = "UPDATE category SET Nom = :Nom  WHERE id_category = :id_category";
                 $stmt = $this->DbConnection->getConnection()->prepare($sql);
                 $stmt->bindParam(":id_category", $id, PDO::PARAM_INT);
-                $stmt->bindParam(":nom", $nom, PDO::PARAM_STR);
+                $stmt->bindParam(":Nom", $nom, PDO::PARAM_STR);
                 $stmt->execute();
                 header("location: ../views/addcategory.php");
             } catch (PDOException $e) {
@@ -50,7 +54,7 @@ require_once '../classe/classe.php';
         }
 
         
-        public function supprimerCategorie(int $id){
+        public function supprimerCategorie($id){
             try {
                 $sql = "DELETE FROM category WHERE id_categorie = :id_categorie";
                 $stmt = $this->DbConnection->getConnection()->prepare($sql);
@@ -67,7 +71,7 @@ require_once '../classe/classe.php';
 
         public function accepterArticle($id_article){
             try {
-                $sql = "UPDATE article SET  Statut = 'Accepté' WHERE id_article = :id_article";
+                $sql = "UPDATE articles SET  Statut = 'Accepté' WHERE id_article = :id_article";
                 $stmt = $this->DbConnection->getConnection()->prepare($sql);
                 $stmt->bindParam(":id_article", $id_article, PDO::PARAM_INT);
                 $stmt->execute();
@@ -81,9 +85,9 @@ require_once '../classe/classe.php';
 
 
 
-        public function refuseArticle(int $id_article){
+        public function refuseArticle( $id_article){
             try {
-                $sql = "UPDATE article SET  Statut = 'Refusé' WHERE id_article = :id_article";
+                $sql = "UPDATE articles SET  Statut = 'Refusé' WHERE id_article = :id_article";
                 $stmt = $this->DbConnection->getConnection()->prepare($sql);
                 $stmt->bindParam(":id_article", $id_article, PDO::PARAM_INT);
                 $stmt->execute();

@@ -1,6 +1,8 @@
 <?php
 
     require_once '../classe/classe.php';
+    require_once '../database/db.php';
+
 
     class Visiteur extends User{
 

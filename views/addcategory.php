@@ -4,10 +4,56 @@ session_start();
 
 require_once '../classe/classe.php';
 require_once '../database/db.php';
-$admin_id = $_SESSION['id_user'];
+require_once '../classe/admin.php';
+require_once '../classe/user.php';
+
+
+// $admin_id = $_SESSION['id_user'];
 
 $db = new DbConnection();
 $pdo = $db->getConnection();
+
+// $admin = new Admin($pdo);
+// $connection = $admin->getConnection();
+
+$user = new User($pdo);
+$admin = new Admin($pdo);
+
+
+
+// if (isset($_POST['id_user'])) {
+//     $id_admin = $_POST['id_user'];
+// } else {
+//     // Handle the case where 'id_admin' is not set
+//     $id_admin = null;
+// }
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Nom'])) {
+    $nom = $_POST['Nom'];
+   
+    $admin-> ajouterCategorie($id_admin, $nom);
+
+    header("Location: addcategory.php");
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
+    $activityId = $_POST['delete'];
+    $admin->supprimerCategorie($id);
+    header("Location: addcategory.php");
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
+    $activityId = $_POST['modifie'];
+    $nom =$_POST['Nom'];
+    $admin->modifieCategorie($id, $nom);
+    header("Location: addcategory.php");
+    exit;
+}
+
+
 
 
 ?>
@@ -49,7 +95,7 @@ $pdo = $db->getConnection();
 
       <ul class="space-y-2 font-medium px-3 pb-4">
         <li>
-            <a href="adminDashboard.php" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-100 hover:text-black group">
+            <a href="dashadmin.php" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-100 hover:text-black group">
                 <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                   <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
                   <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
@@ -58,11 +104,11 @@ $pdo = $db->getConnection();
             </a>
         </li>
         <li>
-            <a href="addActivity.php" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-100 hover:text-black group">
+            <a href="addcategory.php" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-100 hover:text-black group">
                <svg class="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 18">
                   <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z"/>
                </svg>
-               <span class="ms-3">Activities</span>
+               <span class="ms-3">category</span>
             </a>
         </li>
         <li>
@@ -81,25 +127,28 @@ $pdo = $db->getConnection();
 <!-- Main -->
 <div class="p-8 sm:ml-80">
 
-    <h2 class="text-4xl font-semibold text-black mb-10">Activities</h2>
+    <h2 class="text-4xl font-semibold text-black mb-10">category</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12" style="align-items: start;">
         <?php
-            $activities_sql = "SELECT * FROM Activities";
+            $activities_sql = "SELECT * FROM category";
             $stmt_activities = $pdo->query($activities_sql);
             $activities = $stmt_activities->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($activities as $activity):
         ?>
         <div class="bg-black shadow-lg rounded-lg overflow-hidden" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
-            <img src="<?php echo $activity['PhotoURL']; ?>" alt="Activity Photo" class="w-full h-48 object-cover">
             <div class="p-6">
-                <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo $activity['Name']; ?></h3>
-                <p class="text-lg text-white"><?php echo $activity['Description']; ?></p>
+                <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo $activity['Nom']; ?></h3>
                 <form method="POST" onsubmit="return confirm('Are you sure you want to delete this activity?');">
-                    <input type="hidden" name="delete_activity_id" value="<?php echo $activity['ActivityID']; ?>">
+                    <input type="hidden" name="delete" value="<?php echo $activity['Nom']; ?>">
                     <div class="flex items-center justify-center mt-4">
                         <button type="submit" class="text-xl hover:scale-105">🗑️</button>
+                    </div>
+
+                    <input type="hidden" name="modifie" value="<?php echo $activity['Nom']; ?>">
+                    <div class="flex items-center justify-center mt-4">
+                        <button type="submit" class="text-xl hover:scale-105">Update</button>
                     </div>
                 </form>
             </div>
@@ -116,11 +165,11 @@ $pdo = $db->getConnection();
                 <form method="POST" class="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
                     <div class="relative">
                         <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
-                            absolute">Activity Name</p>
-                        <input type="text" id="activityName" name="activityName" required class="border placeholder-gray-400 focus:outline-none
+                            absolute">category Name</p>
+                        <input type="text" id="Nom" name="Nom" required class="border placeholder-gray-400 focus:outline-none
                             focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
                             border-gray-300 rounded-md"/>
-                    </div>
+                    <!-- </div>
                     <div class="relative">
                         <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
                             absolute">Description</p>
@@ -134,10 +183,10 @@ $pdo = $db->getConnection();
                         <input type="text" id="activityImg" name="activityImg" required class="border placeholder-gray-400 focus:outline-none
                             focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
                             border-gray-300 rounded-md"/>
-                    </div>
+                    </div> -->
                     <div class="relative">
                         <button type="submit" class="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-green-500
-                            rounded-lg transition duration-200 hover:bg-green-600 ease">Add Activity</button>
+                            rounded-lg transition duration-200 hover:bg-green-600 ease">Add category</button>
                     </div>
                 </form>
 

@@ -10,6 +10,11 @@ $admin_id = $_SESSION['id_user'];
 $db = new DbConnection();
 $pdo = $db->getConnection();
 
+
+
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -85,7 +90,7 @@ $pdo = $db->getConnection();
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12" style="align-items: start;">
         <?php
-            $activities_sql = "SELECT * FROM Activities";
+            $activities_sql = "SELECT * FROM category";
             $stmt_activities = $pdo->query($activities_sql);
             $activities = $stmt_activities->fetchAll(PDO::FETCH_ASSOC);
 
@@ -108,7 +113,7 @@ $pdo = $db->getConnection();
 
     </div>
 
-    <h2 class="text-4xl font-semibold text-black mb-6">Add New Activity</h2>
+    <h2 class="text-4xl font-semibold text-black mb-6">Add New category</h2>
     <div class="flex items-center justify-center my-8 bg-gray-100">
         <div class="w-full mx-0 relative z-10 max-w-2xl lg:mt-0 lg:w-5/12">
             <div class="p-10 bg-white shadow-2xl rounded-xl relative z-10" data-aos="fade-right">
@@ -116,12 +121,12 @@ $pdo = $db->getConnection();
                 <form method="POST" class="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
                     <div class="relative">
                         <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
-                            absolute">Activity Name</p>
-                        <input type="text" id="activityName" name="activityName" required class="border placeholder-gray-400 focus:outline-none
+                            absolute">category Name</p>
+                        <input type="text" id="activityName" name="category" required class="border placeholder-gray-400 focus:outline-none
                             focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
                             border-gray-300 rounded-md"/>
                     </div>
-                    <div class="relative">
+                    <!-- <div class="relative">
                         <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600
                             absolute">Description</p>
                         <textarea id="activityDescription" name="activityDescription" rows="3" required class="border placeholder-gray-400 focus:outline-none
@@ -134,10 +139,10 @@ $pdo = $db->getConnection();
                         <input type="text" id="activityImg" name="activityImg" required class="border placeholder-gray-400 focus:outline-none
                             focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white
                             border-gray-300 rounded-md"/>
-                    </div>
+                    </div> -->
                     <div class="relative">
                         <button type="submit" class="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-green-500
-                            rounded-lg transition duration-200 hover:bg-green-600 ease">Add Activity</button>
+                            rounded-lg transition duration-200 hover:bg-green-600 ease">Add category</button>
                     </div>
                 </form>
 

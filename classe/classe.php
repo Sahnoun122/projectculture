@@ -1,6 +1,5 @@
 <?php
 
-use function PHPSTORM_META\map;
 
 require_once '../database/db.php';
 

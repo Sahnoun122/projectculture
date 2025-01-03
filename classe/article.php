@@ -1,6 +1,6 @@
 <?php
 
-    require_once '../config/db.php';
+require_once '../database/db.php';
 
     class Article{
         private  $id_article;
