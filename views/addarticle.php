@@ -40,16 +40,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Titre'])) {
     $id_auteur =  $_SESSION['id_user'];
 
     $titre= $_POST['Titre'];
+    
     $contenu= $_POST['Contenu'];
     $Image= $_POST['Image'];
-    $category= $_POST['category'];
     $id_category = $_POST['id_category'];
-    $id_auteur =$_POST['id_auteur'];
+    $id_auteur =$_SESSION['id_user'];
 
    
-    $article-> ajouterArticle(  $id_auteur ,$titre ,  $contenu ,$Image, $id_category);
+    $article-> ajouterArticle(     $id_auteur ,$titre ,  $contenu ,$Image, $id_category);
 
-    header("Location: addarticle.php");
+    // header("Location: addarticle.php");
     exit;
 }
 
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
     exit;
 }
 
-$sql = 'SELECT Nom FROM category ';
+$sql = 'SELECT * FROM category ';
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 
@@ -158,7 +158,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12" style="align-items: start;">
         <?php
-            $activities_sql = "SELECT * FROM articles";
+            $activities_sql = "SELECT * FROM articles ";
             $stmt_activities = $pdo->query($activities_sql);
             $activities = $stmt_activities->fetchAll(PDO::FETCH_ASSOC);
 
@@ -169,6 +169,7 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo $activity['Titre']; ?></h3>
                 <p class="text-lg text-white"><?php echo $activity['Contenu']; ?></p>
                 <img src="<?php echo $activity['Image']; ?>" alt="Activity Photo" class="w-full h-48 object-cover">
+                <p class="text-lg text-white"><?php echo $activity['id_category']; ?></p>
 
                 <form method="POST" onsubmit="return confirm('Are you sure you want to delete this article?');">
                     <input type="hidden" name="delete" value="<?php echo $activity['id_article']; ?>">
@@ -189,11 +190,11 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 <form method="POST" class="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
                 <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an option</label>
-  <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+  <select id="category" name="id_category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
   <?php
 
 foreach ($result as $row) {
-    echo "<option value=\"" . $row['Nom'] . "\">" . $row['Nom'] . "</option>";
+    echo "<option value=".$row['id_category'] . ">" . $row['Nom'] . "</option>";
 }
 ?>
   </select>
