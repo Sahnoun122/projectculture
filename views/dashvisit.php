@@ -16,6 +16,12 @@ $db = new DbConnection();
 $pdo = $db->getConnection();
 
 
+$sql = 'SELECT Nom FROM category ';
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 
 ?>
 
@@ -55,16 +61,7 @@ $pdo = $db->getConnection();
     </div>
 
       <ul class="space-y-2 font-medium px-3 pb-4">
-        <li>
-            <?php if ($user): ?>
-                <a href="#" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-100 hover:text-black group">
-                    <img class="flex-shrink-0 w-8 h-8" src="">
-                    <span class="flex-1 ms-3 whitespace-nowrap"><?php echo $user['Nom']; ?> &#128994;</span>
-                </a>
-            <?php else: ?>
-                <p class="text-base text-red-500">User not found.</p>
-            <?php endif; ?>
-        </li>
+       
         <li>
             <a href="dashvisit.php" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-100 hover:text-black group">
                <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
@@ -98,19 +95,21 @@ $pdo = $db->getConnection();
 <!-- Main -->
 <div class="p-8 sm:ml-80">
 
-    <h2 class="text-4xl font-semibold text-black mb-6">Reservations</h2>
+    <h2 class="text-4xl font-semibold text-black mb-6">Articles</h2>
 
     
-<form class="max-w-sm mx-auto">
-  <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an option</label>
+
+    <form method="POST" class="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
+                <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an option</label>
   <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-    <option selected>Choose a country</option>
-    <option value="US">United States</option>
-    <option value="CA">Canada</option>
-    <option value="FR">France</option>
-    <option value="DE">Germany</option>
+  <?php
+
+foreach ($result as $row) {
+    echo "<option value=\"" . $row['Nom'] . "\">" . $row['Nom'] . "</option>";
+}
+?>
   </select>
-</form>
+    </form>
 
 
     
