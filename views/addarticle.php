@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Titre'])) {
    
     $article-> ajouterArticle(     $id_auteur ,$titre ,  $contenu ,$Image, $id_category);
 
-    // header("Location: addarticle.php");
+    header("Location: addarticle.php");
     exit;
 }
 
@@ -71,17 +71,21 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
+    $id_auteur = $_SESSION['id_user'];
+    $titre = $_POST['Titre'];
+    $contenu = $_POST['Contenu'];
+    $Image = $_POST['Image'];
+    $id_category = $_POST['id_category'];
+    $activityId = $_POST['modifie'];
+    $nom = $_POST['Nom'];
 
+    $article->modifierArticle($id_auteur, $titre, $contenu, $Image, $id_category, $activityId);
 
-// if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
-//     $id =  $_SESSION['id_user'];
-
-//     $activityId = $_POST['modifie'];
-//     $nom =$_POST['Nom'];
-//     $article->modifieCategorie($id, $nom);
-//     header("Location: addcategory.php");
-//     exit;
-// }
+    header("Location: addarticle.php");
+    exit;
+}
+?>
 
 ?>
 
@@ -95,6 +99,8 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
+
         <!-- AOS Animation CDN -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -156,32 +162,34 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <h2 class="text-4xl font-semibold text-black mb-10"> Articles</h2>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12" style="align-items: start;">
-        <?php
-            $activities_sql = "SELECT * FROM articles ";
-            $stmt_activities = $pdo->query($activities_sql);
-            $activities = $stmt_activities->fetchAll(PDO::FETCH_ASSOC);
+  
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12" style="align-items: start;">
+    <?php
+    $activities_sql = "SELECT * FROM articles";
+    $stmt_activities = $pdo->query($activities_sql);
+    $activities = $stmt_activities->fetchAll(PDO::FETCH_ASSOC);
 
-        foreach ($activities as $activity):
-        ?>
-        <div class="bg-black shadow-lg rounded-lg overflow-hidden" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
-            <div class="p-6">
-                <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo $activity['Titre']; ?></h3>
-                <p class="text-lg text-white"><?php echo $activity['Contenu']; ?></p>
-                <img src="<?php echo $activity['Image']; ?>" alt="Activity Photo" class="w-full h-48 object-cover">
-                <p class="text-lg text-white"><?php echo $activity['id_category']; ?></p>
+    foreach ($activities as $activity):
+    ?>
+    <div class="bg-black shadow-lg rounded-lg overflow-hidden" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+        <div class="p-6">
+            <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo htmlspecialchars($activity['Titre'], ENT_QUOTES, 'UTF-8'); ?></h3>
+            <p class="text-lg text-white"><?php echo htmlspecialchars($activity['Contenu'], ENT_QUOTES, 'UTF-8'); ?></p>
+            <img src="<?php echo htmlspecialchars($activity['Image'], ENT_QUOTES, 'UTF-8'); ?>" alt="Activity Photo" class="w-full h-48 object-cover">
+            <p class="text-lg text-white"><?php echo htmlspecialchars($activity['id_category'], ENT_QUOTES, 'UTF-8'); ?></p>
 
-                <form method="POST" onsubmit="return confirm('Are you sure you want to delete this article?');">
-                    <input type="hidden" name="delete" value="<?php echo $activity['id_article']; ?>">
-                    <div class="flex items-center justify-center mt-4">
-                        <button type="submit" class="text-xl hover:scale-105">🗑️</button>
-                    </div>
-                </form>
-            </div>
+            <form method="POST" onsubmit="return confirm('Are you sure you want to delete this article?');">
+                <input type="hidden" name="delete" value="<?php echo $activity['id_article']; ?>">
+                <div class="flex items-center justify-center mt-4">
+                    <button type="submit" class="text-xl hover:scale-105">🗑️</button>
+                    <button type="submit" name="modifie" value="<?php echo $activity['id_article']; ?>" class="text-xl hover:scale-105">🔏</button>
+                </div>
+            </form>
         </div>
-        <?php endforeach; ?>
-
     </div>
+    <?php endforeach; ?>
+</div>
+
 
     <h2 class="text-4xl font-semibold text-black mb-6">Add New Articles</h2>
     <div class="flex items-center justify-center my-8 bg-gray-100">
@@ -190,13 +198,13 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 <form method="POST" class="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
                 <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an option</label>
-  <select id="category" name="id_category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-  <?php
-
-foreach ($result as $row) {
-    echo "<option value=".$row['id_category'] . ">" . $row['Nom'] . "</option>";
-}
-?>
+            <select id="category" name="id_category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+       <?php
+        
+      foreach ($result as $row) {
+      echo "<option value=".$row['id_category'] . ">" . $row['Nom'] . "</option>";
+       }
+        ?>
   </select>
             
 

@@ -123,14 +123,21 @@ $toutarticles = $article-> afficherstatu();
             </thead>
             <tbody>
                 <?php 
-                    foreach($toutarticles  as $toutarticle ){
+                
+                if(is_array($toutarticles) || is_object($toutarticles)) {
+                    foreach($toutarticles  as $toutarticle  ) {
                         echo '<tr class="border-b hover:bg-gray-50">
-                            <td class="px-6 py-4 text-sm">'.$toutarticle ['Titre'].'</td>
-                            <td class="px-6 py-4 text-sm">'.$toutarticle ['DateCreation'].'</td>
-                            <td class="px-6 py-4 text-sm">'.$toutarticle ['Statut'].'</td>
+                            <td class="px-6 py-4 text-sm">'.$toutarticle['Titre'].'</td>
+                            <td class="px-6 py-4 text-sm">'.$toutarticle['DateCreation'].'</td>
+                            <td class="px-6 py-4 text-sm">'.$toutarticle['Statut'].'</td>
                         </tr>';
                     }
+                } else {
+                    echo "No articles found.";
+                }
                 ?>
+                
+            
             </tbody>
         </table>
     </div>
