@@ -53,8 +53,8 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="h-full overflow-y-auto bg-black">
     <!-- Sidebar Menu -->
     <div class="flex flex-col">
-        <img src="https://hips.hearstapps.com/hmg-prod/images/701/articles/2017/01/how-much-joining-gym-helps-health-2-jpg-1488906648.jpeg" alt="Lawyer Photo" class="object-cover">
-        <div class="px-3 py-4">
+    <img src="../assets/scriptsql/img/brushes-4226688_1280.jpg" alt="Cover" class="object-cover">
+    <div class="px-3 py-4">
             <h2 class="text-3xl font-semibold text-center text-white mb-6">FitBook</h2>
             <hr class="h-1 bg-white border-0 rounded dark:bg-gray-400">
         </div>
