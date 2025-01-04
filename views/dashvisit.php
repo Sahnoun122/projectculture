@@ -93,52 +93,60 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 <!-- Main -->
-<div class="p-8 sm:ml-80">
 
+<div class="p-8 sm:ml-80">
     <h2 class="text-4xl font-semibold text-black mb-6">Articles</h2>
 
-    
-
     <form method="POST" class="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
-                <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an option</label>
-  <select id="countries" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-  <?php
-
-foreach ($result as $row) {
-    echo "<option value=\"" . $row['Nom'] . "\">" . $row['Nom'] . "</option>";
-}
-?>
-  </select>
+        <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an option</label>
+        <select id="categoryFilter" onchange="filterArticles()" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <option value="all">Tous</option>
+            <?php
+            foreach ($result as $row) {
+                echo "<option value=\"" . $row['id_category'] . "\">" . $row['Nom'] . "</option>";
+            }
+            ?>
+        </select>
     </form>
 
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12" id="articlesContainer" style="align-items: start;">
+        <?php
+        $activities_sql = "SELECT articles.*, category.nom AS category_name FROM articles JOIN category ON articles.id_category = category.id_category";
+        $stmt_activities = $pdo->query($activities_sql);
+        $activities = $stmt_activities->fetchAll(PDO::FETCH_ASSOC);
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12" style="align-items: start;">
-    <?php
-    $activities_sql = "SELECT * FROM articles";
-    $stmt_activities = $pdo->query($activities_sql);
-    $activities = $stmt_activities->fetchAll(PDO::FETCH_ASSOC);
-
-    foreach ($activities as $activity):
-    ?>
-    <div class="bg-black shadow-lg rounded-lg overflow-hidden" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
-        <div class="p-6">
-            <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo htmlspecialchars($activity['Titre'], ENT_QUOTES, 'UTF-8'); ?></h3>
-            <p class="text-lg text-white"><?php echo htmlspecialchars($activity['Contenu'], ENT_QUOTES, 'UTF-8'); ?></p>
-            <img src="<?php echo htmlspecialchars($activity['Image'], ENT_QUOTES, 'UTF-8'); ?>" alt="Activity Photo" class="w-full h-48 object-cover">
-            <p class="text-lg text-white"><?php echo htmlspecialchars($activity['id_category'], ENT_QUOTES, 'UTF-8'); ?></p>
-
-          
+        foreach ($activities as $activity):
+        ?>
+        <div class="bg-black shadow-lg rounded-lg overflow-hidden" data-category="<?php echo htmlspecialchars($activity['id_category'], ENT_QUOTES, 'UTF-8'); ?>" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+            <div class="p-6">
+                <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo htmlspecialchars($activity['Titre'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                <p class="text-lg text-white"><?php echo htmlspecialchars($activity['Contenu'], ENT_QUOTES, 'UTF-8'); ?></p>
+                <img src="<?php echo htmlspecialchars($activity['Image'], ENT_QUOTES, 'UTF-8'); ?>" alt="Activity Photo" class="w-full h-48 object-cover">
+                <p class="text-lg text-white"><?php echo htmlspecialchars($activity['category_name'], ENT_QUOTES, 'UTF-8'); ?></p>
+            </div>
         </div>
+        <?php endforeach; ?>
     </div>
-    <?php endforeach; ?>
 </div>
 
-
- 
 
 </div>
 
 <script>
+
+function filterArticles() {
+    let filter = document.getElementById("categoryFilter").value;
+    let articles = document.querySelectorAll("#articlesContainer > div");
+
+    articles.forEach(article => {
+        if (filter === "all" || article.getAttribute("data-category") === filter) {
+            article.style.display = "block";
+        } else {
+            article.style.display = "none";
+        }
+    });
+}
+
   AOS.init();
 </script>
 
