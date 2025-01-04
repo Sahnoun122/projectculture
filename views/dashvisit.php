@@ -91,7 +91,6 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
    </div>
 </aside>
 
-
 <!-- Main -->
 
 <div class="p-8 sm:ml-80">
@@ -117,22 +116,19 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($activities as $activity):
         ?>
-        <div class="bg-black shadow-lg rounded-lg overflow-hidden" data-category="<?php echo htmlspecialchars($activity['id_category'], ENT_QUOTES, 'UTF-8'); ?>" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+        <div class="bg-black shadow-lg rounded-lg overflow-hidden" data-category="<?php echo htmlspecialchars($activity['id_category']); ?>" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
             <div class="p-6">
-                <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo htmlspecialchars($activity['Titre'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo htmlspecialchars($activity['Titre']); ?></h3>
                 <p class="text-lg text-white"><?php echo htmlspecialchars($activity['Contenu'], ENT_QUOTES, 'UTF-8'); ?></p>
-                <img src="<?php echo htmlspecialchars($activity['Image'], ENT_QUOTES, 'UTF-8'); ?>" alt="Activity Photo" class="w-full h-48 object-cover">
-                <p class="text-lg text-white"><?php echo htmlspecialchars($activity['category_name'], ENT_QUOTES, 'UTF-8'); ?></p>
+                <img src="<?php echo htmlspecialchars($activity['Image']); ?>" alt="Activity Photo" class="w-full h-48 object-cover">
+                <p class="text-lg text-white data-category"><?php echo htmlspecialchars($activity['category_name']); ?></p>
             </div>
         </div>
         <?php endforeach; ?>
     </div>
 </div>
 
-
-
 <script>
-
 function filterArticles() {
     let filter = document.getElementById("categoryFilter").value;
     let articles = document.querySelectorAll("#articlesContainer > div");
@@ -146,8 +142,9 @@ function filterArticles() {
     });
 }
 
-  AOS.init();
+AOS.init();
 </script>
+
 
 </body>
 </html>
