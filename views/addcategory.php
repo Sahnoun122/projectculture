@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Nom'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
     $activityId = $_POST['delete'];
     $id =  $_SESSION['id_user'];
-
+    
     $admin->supprimerCategorie($id);
     header("Location: addcategory.php");
     exit;
@@ -153,15 +153,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
 
 
                 <form method="POST" onsubmit="return confirm('Are you sure you want to delete this activity?');">
-                    <input type="hidden" name="delete" value="<?php echo $activity['Nom']; ?>">
+                    <input type="hidden" name="delete" value="<?php echo $activity['id_category']; ?>">
                     <div class="flex items-center justify-center mt-4">
                         <button type="submit" class="text-xl hover:scale-105">🗑️</button>
                     </div>
 
-                    <input type="hidden" name="modifie" value="<?php echo $activity['Nom']; ?>">
-                    <div class="flex items-center justify-center mt-4">
-                        <button type="submit" class="text-xl hover:scale-105">Update</button>
-                    </div>
+                   
                 </form>
             </div>
         </div>
