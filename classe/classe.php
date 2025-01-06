@@ -8,7 +8,7 @@ require_once '../database/db.php';
 
 class Auth extends DbConnection {
 
-    public function register($nom,$prenom, $email ,$Motdepasse, $role) {
+    public function register($nom,$prenom, $email ,$Motdepasse, $role ,$PROFILE) {
         try {
 
             $allowedRoles = ['admin', 'user', 'visiteur'];
@@ -20,14 +20,16 @@ class Auth extends DbConnection {
             // $role = ($role === 'user') ? 'user' : 'visiteur';
             $Motdepasse = password_hash($Motdepasse, PASSWORD_BCRYPT);
 
-            $sqlUser = "INSERT INTO user (Nom , Prenom , Email, Motdepasse, Role) VALUES ( :Nom , :Prenom ,:Email, :Motdepasse, :role)";
+            $sqlUser = "INSERT INTO user (Nom , Prenom , Email, Motdepasse, Role , PROFILE) VALUES ( :Nom , :Prenom ,:Email, :Motdepasse, :role , :PROFILE)";
             $stmtUser = $this->connection->prepare($sqlUser);
             $stmtUser->execute([
                 ':Nom' => $nom,
                 ':Prenom' => $prenom,
                 ':Email' => $email,
                 ':Motdepasse' => $Motdepasse,
-                ':role' => $role
+                ':role' => $role,
+                ':PROFILE' => $PROFILE
+
             ]);
 
             $userId = $this->connection->lastInsertId();

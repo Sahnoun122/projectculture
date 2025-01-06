@@ -1,25 +1,49 @@
+
+
 <?php
+
 require_once '../classe/classe.php';
 require_once '../database/db.php';
+require_once '../phpmailer/mail.php'; 
 
 $auth = new Auth();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = $_POST['nom'];
     $prenom = $_POST['prenom'];
-    $email= $_POST['email'];
+    $email = $_POST['email'];
     $Motdepasse = $_POST['Motdepasse'];
+    $PROFILE = $_POST['PROFILE'];
     $role = $_POST['role'];
 
     try {
-        $userId = $auth->register($nom,$prenom, $email ,$Motdepasse, $role);
+        $userId = $auth->register($nom, $prenom, $email, $Motdepasse, $role, $PROFILE);
+
+        // Envoi de l'email
+        $mail->setFrom('khadijasahnoun70@gmail.com', 'khadija sahnoun');
+        $mail->addAddress($email);
+
+        $mail->Subject = 'Bienvenue sur notre site !';
+        $mail->Body    = 'Bonjour ' . $prenom . ',<br><br>Merci de vous être inscrit sur notre site !<br><b>Bienvenue!</b>';
+        $mail->AltBody = 'Bonjour ' . $prenom . ', Merci de vous être inscrit sur notre site ! Bienvenue!';
+
+        if ($mail->send()) {
+            echo 'Email envoyé !';
+        } else {
+            echo 'Erreur : ' . $mail->ErrorInfo;
+        }
+
+        // Redirection après inscription
         header('Location: connecter.php');
         exit();
     } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
+        echo "Erreur : " . $e->getMessage();
     }
 }
 ?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -82,12 +106,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </select>
                     </div>
 
-                    <!-- Password -->
+                    <!-- photos-->
                     <div class="relative">
-                        <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Password</p>
-                        <input type="password" id="Motdepasse" name="Motdepasse" placeholder="•••••••"  class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
+                        <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Photos</p>
+                        <input type="file" id="PROFILE" name="PROFILE" placeholder=""  class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
                     </div>
 
+                    <div class="relative">
+                        <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Email</p>
+                        <input type="password" id="Motdepasse" name="Motdepasse" placeholder="............." class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
+                    </div>
                     <div class="relative">
                         <button type="submit" name="submit" class="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-green-500
                         rounded-lg transition duration-200 hover:bg-green-600 ease">Register</button>

@@ -95,12 +95,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
 <aside id="default-sidebar" class="fixed top-0 left-0 z-40 w-80 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
     <div class="h-full overflow-y-auto bg-black">
     <!-- Sidebar Menu -->
-    <div class="flex flex-col">
-    <img src="../assets/scriptsql/img/brushes-4226688_1280.jpg" alt="Cover" class="object-cover">
-    <div class="px-3 py-4">
-            <h2 class="text-3xl font-semibold text-center text-white mb-6">FitBook</h2>
-            <hr class="h-1 bg-white border-0 rounded dark:bg-gray-400">
-        </div>
+    <div class="flex flex-col items-center mt-6 -mx-2">
+        <img class="object-cover w-24 h-24 mx-2 rounded-full" src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="avatar">
+        <h4 class="mx-2 mt-2 font-medium" style="color: white;"><?php echo $_SESSION['Nom']?></h4>
+        <p class="mx-2 mt-1 text-sm font-medium" style="color: white;"><?php echo $_SESSION['email']?></p>
     </div>
 
       <ul class="space-y-2 font-medium px-3 pb-4">
