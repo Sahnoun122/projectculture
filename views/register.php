@@ -20,12 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $userId = $auth->register($nom, $prenom, $email, $Motdepasse, $role, $PROFILE);
 
         // Envoi de l'email
-        $mail->setFrom('khadijasahnoun70@gmail.com', 'khadija sahnoun');
+        $mail->setFrom('khadijasahnoun46@gmail.com', 'khadija sahnoun');
         $mail->addAddress($email);
 
         $mail->Subject = 'Bienvenue sur notre site !';
         $mail->Body    = 'Bonjour ' . $prenom . ',<br><br>Merci de vous être inscrit sur notre site !<br><b>Bienvenue!</b>';
-        $mail->AltBody = 'Bonjour ' . $prenom . ', Merci de vous être inscrit sur notre site ! Bienvenue!';
+        $mail->AltBody = 'Bonjour ' . $nom . ', Merci de vous être inscrit sur notre site ! Bienvenue!';
 
         if ($mail->send()) {
             echo 'Email envoyé !';
