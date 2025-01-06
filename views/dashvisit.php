@@ -110,7 +110,8 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12" id="articlesContainer" style="align-items: start;">
         <?php
-        $activities_sql = "SELECT articles.*, category.nom AS category_name FROM articles JOIN category ON articles.id_category = category.id_category";
+        $activities_sql = "SELECT articles.*, category.nom AS category_name FROM articles JOIN category ON articles.id_category = category.id_category WHERE  articles.DateCreation >= DATE_SUB(CURRENT_DATE, INTERVAL 30 DAY)
+       AND articles.Statut = 'Accepté'";
         $stmt_activities = $pdo->query($activities_sql);
         $activities = $stmt_activities->fetchAll(PDO::FETCH_ASSOC);
 

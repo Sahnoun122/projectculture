@@ -56,19 +56,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <!-- Name -->
                     <div class="relative">
                         <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Name</p>
-                        <input type="text" name="nom" placeholder="nom" class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
+                        <input type="text" id="nom" name="nom" placeholder="nom" class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
                     </div>
 
                     <!-- Username -->
                     <div class="relative">
                         <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Prenom</p>
-                        <input type="text" name="prenom" placeholder="prenom" required class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
+                        <input type="text" id="prenom" name="prenom" placeholder="prenom" class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
                     </div>
 
                     <!-- Email -->
                     <div class="relative">
                         <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Email</p>
-                        <input type="email" name="email" placeholder="Example123@gmail.com" class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
+                        <input type="email" id="email" name="email" placeholder="Example123@gmail.com" class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
                     </div>
 
                     <!-- Phone -->
@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <!-- Password -->
                     <div class="relative">
                         <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Password</p>
-                        <input type="password" name="Motdepasse" placeholder="•••••••" required class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
+                        <input type="password" id="Motdepasse" name="Motdepasse" placeholder="•••••••"  class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
                     </div>
 
                     <div class="relative">
@@ -105,6 +105,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 <script>
+
+function validateForm() {
+    let nom = document.getElementById("nom").value;
+    let prenom = document.getElementById("prenom").value;
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("Motdepasse").value;
+    let emailP = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    let nameP= /^[A-Za-z]+$/;
+    let passwordP = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+    if (!nameP.test(nom)) {
+        alert("Le nom ne doit contenir que des lettres.");
+        return false;
+    }
+
+    if (!nameP.test(prenom)) {
+        alert("Le prénom ne doit contenir que des lettres.");
+        return false;
+    }
+
+    if (!emailP.test(email)) {
+        alert("L'adresse e-mail est invalide.");
+        return false;
+    }
+
+    if (!passwordP.test(password)) {
+        alert("Le mot de passe doit contenir au moins 8 caractères, dont des lettres et des chiffres.");
+        return false;
+    }
+
+    return true;
+}
+
   AOS.init();
 </script>
 

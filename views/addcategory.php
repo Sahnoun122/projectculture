@@ -196,7 +196,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
                     </div> -->
                     <div class="relative">
                         <button type="submit" class="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-green-500
-                            rounded-lg transition duration-200 hover:bg-green-600 ease">Add category</button>
+                            rounded-lg transition duration-200 hover:bg-green-600 ease">Add Category</button>
                     </div>
                 </form>
 
