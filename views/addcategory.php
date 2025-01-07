@@ -152,13 +152,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
 
 
                 <form method="POST" onsubmit="return confirm('Are you sure you want to delete this activity?');">
-                    <input type="hidden" name="delete" value="<?php echo $activity['id_category']; ?>">
                     <div class="flex items-center justify-center mt-4">
-                        <button type="submit" class="text-xl hover:scale-105">🗑️</button>
+                        <button type="submit" class="text-xl hover:scale-105"  name="delete" value="<?php echo $activity['id_category']; ?>">🗑️</button>
                     </div>
+                    <!-- <button type="submit" name="update" value="" class="text-xl hover:scale-105">🗑️</button> -->
 
                    
                 </form>
+
+                <form action="./updatecategory.php?id=<?php echo $activity['id_category']; ?>" method="POST">
+                    <button name="update" class="text-xl hover:scale-105">🗑️</button>
+                </form>
+
             </div>
         </div>
         <?php endforeach; ?>

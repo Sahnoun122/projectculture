@@ -50,9 +50,9 @@ require_once '../database/db.php';
 
         public function afficherstatu() {
             try {
-                $query = "SELECT Titre, Statut, DateCreation 
+                $query = "SELECT Titre, Statut, DateCréation
                           FROM articles 
-                          ORDER BY DateCreation DESC";
+                          ORDER BY DateCréation DESC";
                 $stmt = $this->db->prepare($query);
                 $stmt->execute();
                 if ($stmt->rowCount() > 0) {
@@ -71,7 +71,7 @@ require_once '../database/db.php';
         public function toutArticles(){
             try{
                 $query = "SELECT * FROM articles A JOIN category C ON A.id_category = C.id_category
-                        JOIN user U ON U.id_user = A.id_auteur ORDER BY A.DateCreation DESC ";
+                        JOIN user U ON U.id_user = A.id_auteur ORDER BY A.DateCréation DESC ";
                 $stmt = $this->db->prepare($query);
                 $stmt->execute();
                 if($stmt->rowCount() > 0){

@@ -142,7 +142,7 @@ if (isset($_SESSION['id_user'])) {
                     foreach($toutarticles  as $toutarticle  ) {
                         echo '<tr class="border-b hover:bg-gray-50">
                             <td class="px-6 py-4 text-sm">'.$toutarticle['Titre'].'</td>
-                            <td class="px-6 py-4 text-sm">'.$toutarticle['DateCreation'].'</td>
+                            <td class="px-6 py-4 text-sm">'.$toutarticle['DateCréation'].'</td>
                             <td class="px-6 py-4 text-sm">'.$toutarticle['Statut'].'</td>
                         </tr>';
                     }

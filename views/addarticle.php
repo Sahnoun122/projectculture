@@ -38,21 +38,19 @@ if (isset($_POST['id_user'])) {
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Titre'])) {
-    $id_auteur =  $_SESSION['id_user'];
-
-    $titre= $_POST['Titre'];
-    
-    $contenu= $_POST['Contenu'];
-    $Image= $_POST['Image'];
+    $id_auteur = $_SESSION['id_user'];
+    $titre = $_POST['Titre'];
+    $contenu = $_POST['Contenu'];
+    $Image = $_POST['Image'];
     $id_category = $_POST['id_category'];
-    $id_auteur =$_SESSION['id_user'];
 
-   
-    $article-> ajouterArticle(     $id_auteur ,$titre ,  $contenu ,$Image, $id_category);
+
+    $article->ajouterArticle($id_auteur, $titre, $contenu, $Image, $id_category);
 
     header("Location: addarticle.php");
     exit;
 }
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
 
@@ -70,22 +68,6 @@ $stmt->execute();
 
 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
-    $id_auteur = $_SESSION['id_user'];
-    $titre = $_POST['Titre'];
-    $contenu = $_POST['Contenu'];
-    $Image = $_POST['Image'];
-    $id_category = $_POST['id_category'];
-    $activityId = $_POST['modifie'];
-    $nom = $_POST['Nom'];
-
-    $article->modifierArticle($id_auteur, $titre, $contenu, $Image, $id_category, $activityId);
-
-    header("Location: addarticle.php");
-    exit;
-}
 ?>
 
 
@@ -156,21 +138,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
 </aside>
 
 
-
 <div class="p-8 sm:ml-80">
     <h2 class="text-4xl font-semibold text-black mb-6">Articles</h2>
-
-    <form method="POST" class="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
-        <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an option</label>
-        <select id="categoryFilter" onchange="filterArticles()" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            <option value="all">Tous</option>
-            <?php
-            foreach ($result as $row) {
-                echo "<option value=\"" . $row['id_category'] . "\">" . $row['Nom'] . "</option>";
-            }
-            ?>
-        </select>
-    </form>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12" id="articlesContainer" style="align-items: start;">
         <?php
@@ -187,19 +156,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
                 <img src="<?php echo htmlspecialchars($activity['Image'], ENT_QUOTES, 'UTF-8'); ?>" alt="Activity Photo" class="w-full h-48 object-cover">
                 <p class="text-lg text-white"><?php echo htmlspecialchars($activity['category_name'], ENT_QUOTES, 'UTF-8'); ?></p>
 
-                
-            <form method="POST" onsubmit="return confirm('Are you sure you want to delete this article?');">
-                <input type="hidden" name="delete" value="<?php echo $activity['id_article']; ?>">
-                <div class="flex items-center justify-center mt-4">
-                    <button type="submit" class="text-xl hover:scale-105">🗑️</button>
-                    <button type="submit" name="modifie" value="<?php echo $activity['id_article']; ?>" class="text-xl hover:scale-105">🔏</button>
-                </div>
-            </form>
+                <form method="POST" >
+                    <div class="flex items-center justify-center mt-4">
+                        <button type="submit" name="delete" class="text-xl hover:scale-105" value="<?php echo htmlspecialchars($activity['id_article'], ENT_QUOTES, 'UTF-8'); ?>">🗑️</button>
+                    </div>
+                    <button type="submit" name="modifie" value="<?php echo htmlspecialchars($activity['id_article'], ENT_QUOTES, 'UTF-8'); ?>" class="text-xl hover:scale-105">🔏</button>
+
+                </form>
             </div>
         </div>
         <?php endforeach; ?>
     </div>
 </div>
+
 
 
 
@@ -246,7 +215,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
                             border-gray-300 rounded-md"/>
                     </div>
                     <div class="relative">
-                        <button type="submit" class="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-green-500
+                        <button type="submit" name="modifi" class="w-full inline-block pt-4 pr-5 pb-4 pl-5 text-xl font-medium text-center text-white bg-green-500
                             rounded-lg transition duration-200 hover:bg-green-600 ease">Add Articles</button>
                     </div>
                 </form>

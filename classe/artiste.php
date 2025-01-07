@@ -14,7 +14,7 @@
         }
 
     
-        public function ajouterArticle(     $id_auteur ,$titre ,  $contenu ,$Image, $id_category){
+        public function ajouterArticle( $id_auteur, $titre, $contenu, $Image, $id_category){
             try{
                 echo "hhn0";
 
@@ -37,29 +37,24 @@
             }
         }
 
-
-        // MODIFY ARTICLE METHOD
-        public function modifierArticle( $id_auteur ,$titre ,  $contenu ,$Image ,$id_category){
+        public function modifierArticle($id_article, $titre, $contenu, $image, $id_category){
             try{
-                $sql = "UPDATE articles SET Titre = :Titre, Contenu , Image= :Contenu, :id_category , :Image = :id_category WHERE id_article = :id_article";
+                $sql = "UPDATE articles SET Titre = :Titre, Contenu = :Contenu, Image = :Image, id_category = :id_category WHERE id_article = :id_article";
                 $stmt = $this->db->prepare($sql);
-                $stmt->bindParam(":titre", $titre, PDO::PARAM_STR);
-                $stmt->bindParam(":contenu", $contenu, PDO::PARAM_STR);
-                $stmt->bindParam(":Image", $$Image, PDO::PARAM_STR);
-              
-
+                $stmt->bindParam(":Titre", $titre, PDO::PARAM_STR);
+                $stmt->bindParam(":Contenu", $contenu, PDO::PARAM_STR);
+                $stmt->bindParam(":Image", $image, PDO::PARAM_STR);
                 $stmt->bindParam(":id_category", $id_category, PDO::PARAM_INT);
-                $stmt->bindParam(":id_article", $id_auteur, PDO::PARAM_INT);
+                $stmt->bindParam(":id_article", $id_article, PDO::PARAM_INT);
                 $stmt->execute();
-
-                header("location: ../views/addarticle.php");
+        
+                header("Location: ../views/addarticle.php");
             } catch (PDOException $e) {
-                return "Erreur lors de modification de l'Article : ". $e->getMessage();
+                return "Erreur lors de modification de l'Article : " . $e->getMessage();
             }
         }
         
 
-        // DELETE ARTICLE METHOD
         public function supprimerArticle( $id_article){
             try{
                 $sql = "DELETE FROM articles WHERE id_article = :id_article";
