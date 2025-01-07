@@ -16,6 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $auth->login($email, $Motdepasse);
         $_SESSION['id_user'] = $user['id_user'];
         $_SESSION['email'] = $user['Email'];
+        $_SESSION['Nom']=$user['Nom'];
+        $_SESSION['profile']=$user['profile'];
+
         $_SESSION['role'] = $user['role'];
 
         if ($user['role'] === 'admin') {
