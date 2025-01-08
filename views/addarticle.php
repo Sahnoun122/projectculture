@@ -43,13 +43,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Titre'])) {
     $contenu = $_POST['Contenu'];
     $Image = $_POST['Image'];
     $id_category = $_POST['id_category'];
+    $id_tag = $_POST['id_tag'];
 
 
-    $article->ajouterArticle($id_auteur, $titre, $contenu, $Image, $id_category);
+
+    $article->ajouterArticle($id_auteur, $titre, $contenu, $Image, $id_category ,   $id_tag);
 
     header("Location: addarticle.php");
     exit;
 }
+
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
@@ -62,11 +65,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
     exit;
 }
 
+
 $sql = 'SELECT * FROM category ';
 $stmt = $pdo->prepare($sql);
 $stmt->execute();
 
 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+$sql1 = 'SELECT * FROM tags ';
+$stmt1 = $pdo->prepare($sql1);
+$stmt1->execute();
+
+$result1 = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -143,7 +154,8 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12" id="articlesContainer" style="align-items: start;">
         <?php
-        $activities_sql = "SELECT articles.*, category.nom AS category_name FROM articles JOIN category ON articles.id_category = category.id_category";
+        $activities_sql = "SELECT articles.*, category.nom  AS category_name FROM articles JOIN category ON articles.id_category = category.id_category ";
+        
         $stmt_activities = $pdo->query($activities_sql);
         $activities = $stmt_activities->fetchAll(PDO::FETCH_ASSOC);
 
@@ -182,12 +194,24 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="p-10 bg-white shadow-2xl rounded-xl relative z-10" data-aos="fade-right">
 
                 <form method="POST" class="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
-                <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an option</label>
+                <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an category</label>
             <select id="category" name="id_category" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
        <?php
         
       foreach ($result as $row) {
       echo "<option value=".$row['id_category'] . ">" . $row['Nom'] . "</option>";
+       }
+        ?>
+  </select>
+
+
+
+  <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an tags</label>
+            <select id="category" name="id_tag" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+       <?php
+        
+      foreach ($result1 as $row) {
+      echo "<option value=".$row['id_tag'] . ">" . $row['Nom'] . "</option>";
        }
         ?>
   </select>

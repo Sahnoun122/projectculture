@@ -25,6 +25,14 @@ $stmt->execute();
 
 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+
+$sql1 = 'SELECT * FROM tags ';
+$stmt1 = $pdo->prepare($sql1);
+$stmt1->execute();
+
+$result1 = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+
+
 $sql2 = "SELECT Nom FROM user";
 $stmt2 = $pdo->prepare($sql2);
 $stmt2->execute();
@@ -128,30 +136,41 @@ $user = $stmt2->fetchAll(PDO::FETCH_ASSOC);
             }
             ?>
         </select>
+
+    
     </form>
+
+
+    <h2 class="text-4xl font-semibold text-black mb-6">Articles</h2>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12" id="articlesContainer" style="align-items: start;">
         <?php
-        $activities_sql = "SELECT articles.*, category.Nom AS category_name FROM articles JOIN category ON articles.id_category = category.id_category WHERE  articles.DateCréation >= DATE_SUB(CURRENT_DATE, INTERVAL 30 DAY)
-       AND articles.Statut = 'Accepté'";
+        $activities_sql = "SELECT articles.*, category.nom  AS category_name FROM articles JOIN category ON articles.id_category = category.id_category ";
+        
         $stmt_activities = $pdo->query($activities_sql);
         $activities = $stmt_activities->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($activities as $activity):
         ?>
-        <div class="bg-black shadow-lg rounded-lg overflow-hidden" data-category="<?php echo htmlspecialchars($activity['id_category']); ?>" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+        <div class="bg-black shadow-lg rounded-lg overflow-hidden" data-category="<?php echo htmlspecialchars($activity['id_category'], ENT_QUOTES, 'UTF-8'); ?>" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
             <div class="p-6">
-                <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo htmlspecialchars($activity['Titre']); ?></h3>
+                <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo htmlspecialchars($activity['Titre'], ENT_QUOTES, 'UTF-8'); ?></h3>
                 <p class="text-lg text-white"><?php echo htmlspecialchars($activity['Contenu'], ENT_QUOTES, 'UTF-8'); ?></p>
-                <img src="<?php echo htmlspecialchars($activity['Image']); ?>" alt="Activity Photo" class="w-full h-48 object-cover">
-                <p class="text-lg text-white data-category"><?php echo htmlspecialchars($activity['category_name']); ?></p>
+                <img src="<?php echo htmlspecialchars($activity['Image'], ENT_QUOTES, 'UTF-8'); ?>" alt="Activity Photo" class="w-full h-48 object-cover">
+                <p class="text-lg text-white"><?php echo htmlspecialchars($activity['category_name'], ENT_QUOTES, 'UTF-8'); ?></p>
+
+               
             </div>
         </div>
         <?php endforeach; ?>
     </div>
 </div>
+</div>
 
 <script>
+
+
+
 function filterArticles() {
     let filter = document.getElementById("categoryFilter").value;
     let articles = document.querySelectorAll("#articlesContainer > div");

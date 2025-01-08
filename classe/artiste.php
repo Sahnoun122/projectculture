@@ -14,16 +14,17 @@
         }
 
     
-        public function ajouterArticle( $id_auteur, $titre, $contenu, $Image, $id_category){
+        public function ajouterArticle( $id_auteur, $titre, $contenu, $Image, $id_category ,$id_tag){
             try{
                 echo "hhn0";
 
-                $sql = 'INSERT INTO articles  ( id_auteur , Titre, Contenu,Image, id_category ) VALUES ( :id_auteur ,:Titre, :Contenu,:Image, :id_category)';
+                $sql = 'INSERT INTO articles  ( id_auteur , Titre, Contenu,Image, id_category,id_tag ) VALUES ( :id_auteur ,:Titre, :Contenu,:Image, :id_category , :id_tag)';
                 $stmt = $this->db->prepare($sql);
                 $stmt->bindParam(":Titre", $titre);
                 $stmt->bindParam(":Image", $Image);
                 $stmt->bindParam(":Contenu", $contenu);
-                
+                $stmt->bindParam(":id_tag",   $id_tag);
+
                 $stmt->bindParam(":id_auteur", $id_auteur);
                 $stmt->bindParam(":id_category", $id_category);
                 echo "before ex";
