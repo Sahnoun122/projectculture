@@ -13,11 +13,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $prenom = $_POST['prenom'];
     $email = $_POST['email'];
     $Motdepasse = $_POST['Motdepasse'];
-    $PROFILE = $_POST['PROFILE'];
     $role = $_POST['role'];
 
+
+
+    $PROFILE = pathinfo($_FILES['PROFILE']["tmp_name"],PATHINFO_FILENAME);
+    $file_extension =pathinfo($_FILES['PROFILE']["name"], PATHINFO_EXTENSION);
+    $new_image_name= $PROFILE .'_'. date("Ymd_His").'.'. $file_extension;
+   
+    $target_direct= "../assets/scriptsql/uploade";
+    $target_path = $target_direct . $new_image_name;
+    if(!move_uploaded_file($_FILES['PROFILE']["tmp_name"],$target_path)){
+         header("Location:register.php");
+
+    }
+
+
     try {
-        $userId = $auth->register($nom, $prenom, $email, $Motdepasse, $role, $PROFILE);
+        $userId = $auth->register($nom, $prenom, $email, $Motdepasse, $role, $PROFILE );
 
         // Envoi de l'email
         $mail->setFrom('khadijasahnoun46@gmail.com', 'khadija sahnoun');
@@ -76,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="w-full mt-20 mr-0 mb-0 ml-0 relative z-10 max-w-2xl lg:mt-0 lg:w-5/12">
             <div class="flex flex-col items-start justify-start pt-10 pr-10 pb-10 pl-10 bg-white shadow-2xl rounded-xl relative z-10">
 
-                <form method="POST" action="register.php" class="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
+                <form method="POST" action="register.php" class="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8" enctype="multipart/form-data">
                     <!-- Name -->
                     <div class="relative">
                         <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Name</p>
@@ -109,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <!-- photos-->
                     <div class="relative">
                         <p class="bg-white pt-0 pr-2 pb-0 pl-2 -mt-3 mr-0 mb-0 ml-2 font-medium text-gray-600 absolute">Photos</p>
-                        <input type="file" id="PROFILE" name="PROFILE" placeholder=""  class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
+                        <input type="file" id="PROFILE" name="PROFILE" accept="uploade/" placeholder=""  class="border placeholder-gray-400 focus:outline-none focus:border-black w-full pt-4 pr-4 pb-4 pl-4 mt-2 mr-0 mb-0 ml-0 text-base block bg-white border-gray-300 rounded-md"/>
                     </div>
 
                     <div class="relative">

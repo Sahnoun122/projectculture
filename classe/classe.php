@@ -32,6 +32,7 @@ class Auth extends DbConnection {
 
             ]);
 
+
             $userId = $this->connection->lastInsertId();
 
             $this->connection->commit();
@@ -44,7 +45,7 @@ class Auth extends DbConnection {
 
     public function login($email, $Motdepasse) {
         try {
-            $sql = "SELECT id_user, Email, Motdepasse, Role FROM user WHERE Email = :Email";
+            $sql = "SELECT id_user, Email, Motdepasse, Role, profile, Nom FROM user WHERE Email = :Email";
             $stmt = $this->connection->prepare($sql);
             $stmt->execute([':Email' => $email]);
             // $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -55,7 +56,9 @@ class Auth extends DbConnection {
                     return [
                             'id_user' => $user['id_user'],
                             'Email' => $user['Email'],
-                            'role' => $user['Role']
+                            'role' => $user['Role'],
+                            'profile' => $user['profile'],
+                            'Nom' => $user['Nom'],
                     ];
                 }else{
                     throw new Exception('Password Incorrect !');
