@@ -103,5 +103,63 @@ require_once '../classe/user.php';
                 return "Erreur lors de la Refuse d'Article : ". $e->getMessage();
             }
         }
+         
+
+
+        
+
+
+
+    
+    public function ajoutertags($id_admin, $nom) {
+        try {
+            $sql = "INSERT INTO tags (id_admin, Nom) VALUES (:id_admin, :Nom)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(":id_admin", $id_admin, PDO::PARAM_INT);
+            $stmt->bindParam(":Nom", $nom, PDO::PARAM_STR);
+            $stmt->execute();
+            header("location: ../views/creetag.php");
+        } catch (PDOException $e) {
+            return "Erreur lors de l'ajout de la catégorie : " . $e->getMessage();
+        }
+    }
+
+    
+    public function modifietags($id, $nom){
+        try {
+            $sql = "UPDATE tags SET Nom = :Nom  WHERE id_admin = :id_admin";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(":iid_admin", $id, PDO::PARAM_INT);
+            $stmt->bindParam(":Nom", $nom, PDO::PARAM_STR);
+            $stmt->execute();
+            header("location: ../views/addcategory.php");
+        } catch (PDOException $e) {
+            return "Erreur lors de Modification de la catégorie :". $e->getMessage();
+        }
+    }
+
+    
+    public function supprimertags($id){
+        try {
+            $sql = "DELETE FROM tags WHERE id_admin= :id_admin";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(":id_admin", $id, PDO::PARAM_INT);
+            $stmt->execute();
+            header("location: ../views/addcategory.php");
+        } catch (PDOException $e) {
+            return "Erreur lors de la suppression de la catégorie : " . $e->getMessage();
+        }
+    }
 
     }
+
+
+
+
+
+
+
+
+
+
+
