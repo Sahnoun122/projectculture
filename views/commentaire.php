@@ -53,6 +53,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_article'], $_POST[
 
 $comment= $admin->affichecommentaires();
 
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
+    
+    $id_co = $_POST['delete'];
+    $admin->supprimerCommentaire($id_co);
+    header("Location: commentaire.php");
+    exit;
+}
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -161,18 +173,31 @@ $comment= $admin->affichecommentaires();
             </tr>
         </thead>
         <tbody>
-            <?php 
-            
-            if(is_array($comment) || is_object($comment)) {
-                foreach($comment as $toutarticle  ) {
-                    echo '<tr class="border-b hover:bg-gray-50">
-                        <td class="px-6 py-4 text-sm">'.$toutarticle['contenu'].'</td>
-                    </tr>';
-                }
-            } else {
-                echo "No articles found.";
-            }
-            ?>
+        <?php 
+if (is_array($comment) || is_object($comment)) {
+    foreach ($comment as $toutarticle) {
+        if (isset($toutarticle['id_co'])) {
+            echo '<tr class="border-b hover:bg-gray-50">
+                <td class="px-6 py-4 text-sm">'.$toutarticle['contenu'].'</td>
+                <td class="px-6 py-4 text-sm">
+                    <form method="post" action="">
+                        <input type="hidden" name="delete" value="'.$toutarticle['id_co'].'">
+                        <button type="submit" class="bg-red-500 text-white px-3 py-1">Supprimer</button>
+                    </form>
+                </td>
+            </tr>';
+        } else {
+            echo '<tr class="border-b hover:bg-gray-50">
+                <td class="px-6 py-4 text-sm" colspan="2">ID du commentaire non trouvé.</td>
+            </tr>';
+        }
+    }
+} else {
+    echo "No articles found.";
+}
+?>
+
+
             
         
         </tbody>

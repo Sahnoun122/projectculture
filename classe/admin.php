@@ -153,7 +153,7 @@ require_once '../classe/user.php';
 
 
     public function afficheprofile() {
-        $sql = "SELECT Nom, Prenom, Email, ROLE FROM user";
+        $sql = "SELECT * FROM user";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         
@@ -162,9 +162,9 @@ require_once '../classe/user.php';
 
 
     public function supprimerProfil($id) {
-        $sql = "DELETE FROM user WHERE id = :id";
+        $sql = "DELETE FROM user WHERE id_user = :id_user";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id_user', $id, PDO::PARAM_INT);
         $stmt->execute();
         
         return $stmt->rowCount(); 
@@ -172,17 +172,17 @@ require_once '../classe/user.php';
 
     
     public function affichecommentaires() {
-        $sql = "SELECT contenu FROM commentaires";
+        $sql = "SELECT * FROM commentaires";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function supprimerCommentaire($id) {
-        $sql = "DELETE FROM commentaires WHERE id = :id";
+    public function supprimerCommentaire($id_co) {
+        $sql = "DELETE FROM commentaires WHERE id_co = :id_co";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':id_co', $id_co, PDO::PARAM_INT);
         $stmt->execute();
         
         return $stmt->rowCount(); 

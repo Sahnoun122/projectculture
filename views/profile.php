@@ -51,7 +51,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_article'], $_POST[
     exit;
 }
 
+
+
 $profile= $admin->afficheprofile();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
+    $id = $_POST['delete'];
+    $admin->supprimerProfil($id) ;
+    header("Location: profile.php");
+    exit;
+}
+
 
 ?>
 
@@ -164,23 +174,37 @@ $profile= $admin->afficheprofile();
             </tr>
         </thead>
         <tbody>
-            <?php 
-            
-            if(is_array($profile) || is_object($profile)) {
-                foreach($profile  as $toutarticle  ) {
-                    echo '<tr class="border-b hover:bg-gray-50">
-                        <td class="px-6 py-4 text-sm">'.$toutarticle['Nom'].'</td>
-                        <td class="px-6 py-4 text-sm">'.$toutarticle['Prenom'].'</td>
-                        <td class="px-6 py-4 text-sm">'.$toutarticle['Email'].'</td>
-                        <td class="px-6 py-4 text-sm">'.$toutarticle['ROLE'].'</td>
 
-                    </tr>';
-                }
-            } else {
-                echo "No articles found.";
-            }
-            ?>
-            
+
+        <?php 
+if (is_array($profile) || is_object($profile)) {
+    foreach ($profile as $toutarticle) {
+        if (isset($toutarticle['id_user'])) {
+            echo '<tr class="border-b hover:bg-gray-50">
+                <td class="px-6 py-4 text-sm">'.$toutarticle['Nom'].'</td>
+                <td class="px-6 py-4 text-sm">'.$toutarticle['Prenom'].'</td>
+                <td class="px-6 py-4 text-sm">'.$toutarticle['Email'].'</td>
+                <td class="px-6 py-4 text-sm">'.$toutarticle['ROLE'].'</td>
+                <td class="px-6 py-4 text-sm">
+                    <form method="post" action="">
+                        <input type="hidden" name="delete" value="'.$toutarticle['id_user'].'">
+                        <button type="submit" class="bg-red-500 text-white px-3 py-1">Supprimer</button>
+                    </form>
+                </td>
+            </tr>';
+        } else {
+            echo '<tr class="border-b hover:bg-gray-50">
+                <td class="px-6 py-4 text-sm" colspan="5">ID de l\'utilisateur non trouvé.</td>
+            </tr>';
+        }
+    }
+} else {
+    echo "No articles found.";
+}
+?>
+
+?>
+
         
         </tbody>
     </table>
