@@ -38,10 +38,32 @@ CREATE TABLE Articles (
     FOREIGN KEY (id_auteur) REFERENCES user(id_user) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+CREATE TABLE Commentaires (
+    id_co INT AUTO_INCREMENT PRIMARY KEY,
+    id_article INT,
+    id_user INT,
+    contenu TEXT,
+    FOREIGN KEY (id_article) REFERENCES articles(id_article) ON DELETE CASCADE ON UPDATE CASCADE ,
+    FOREIGN KEY (id_user) REFERENCES user(id_user) ON DELETE CASCADE ON UPDATE CASCADE
+);
 
+CREATE VIEW Vue_Articles_Commentaires AS
+SELECT 
+    articles.id_article AS Article_ID,
+    articles.Titre AS Titre_Article,
+    COUNT(Commentaires.id_co) AS Nombre_Commentaires
+FROM 
+    articles
+LEFT JOIN 
+    Commentaires 
+ON 
+    articles.id_article = Commentaires.id_article
+GROUP BY 
+    articles.id_article, articles.Titre
+ORDER BY 
+    Nombre_Commentaires DESC;
 
-
-
+    
 
 
 

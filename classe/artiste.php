@@ -38,15 +38,17 @@
             }
         }
 
-        public function modifierArticle($id_article, $titre, $contenu, $image, $id_category){
+        public function modifierArticle($id_article, $titre, $contenu, $image, $id_category , $id_tag){
             try{
-                $sql = "UPDATE articles SET Titre = :Titre, Contenu = :Contenu, Image = :Image, id_category = :id_category WHERE id_article = :id_article";
+                $sql = "UPDATE articles SET Titre = :Titre, Contenu = :Contenu, Image = :Image, id_category = :id_category ,id_tag = :id_tag  WHERE id_article = :id_article";
                 $stmt = $this->db->prepare($sql);
                 $stmt->bindParam(":Titre", $titre, PDO::PARAM_STR);
                 $stmt->bindParam(":Contenu", $contenu, PDO::PARAM_STR);
                 $stmt->bindParam(":Image", $image, PDO::PARAM_STR);
                 $stmt->bindParam(":id_category", $id_category, PDO::PARAM_INT);
-                $stmt->bindParam(":id_article", $id_article, PDO::PARAM_INT);
+                $stmt->bindParam(":id_tag", $id_article, PDO::PARAM_INT);
+                $stmt->bindParam(":id_article", $id_tag, PDO::PARAM_INT);
+
                 $stmt->execute();
         
                 header("Location: ../views/addarticle.php");
