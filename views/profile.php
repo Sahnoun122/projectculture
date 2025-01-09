@@ -51,6 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_article'], $_POST[
     exit;
 }
 
+$profile= $admin->afficheprofile();
+
 ?>
 
 <!DOCTYPE html>
@@ -145,33 +147,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_article'], $_POST[
 <!-- Main -->
 <div class="p-8 sm:ml-80">
 
-    <h2 class="text-4xl font-semibold text-black mb-6">Reservations</h2>
+    <h2 class="text-4xl font-semibold text-black mb-6">profils</h2>
 
     
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12" style="align-items: start;">
-        <?php
-            $activities_sql = "SELECT * FROM articles";
-            $stmt_activities = $pdo->query($activities_sql);
-            $activities = $stmt_activities->fetchAll(PDO::FETCH_ASSOC);
+    <div class="p-8 sm:ml-80">
 
-        foreach ($activities as $activity):
-        ?>
-        <div class="bg-black shadow-lg rounded-lg overflow-hidden" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
-            <div class="p-6">
-                <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo $activity['Titre']; ?></h3>
-                <p class="text-lg text-white"><?php echo $activity['Contenu']; ?></p>
-                <img src="<?php echo $activity['Image']; ?>" alt="Activity Photo" class="w-full h-48 object-cover">
+<h2 class="text-4xl font-semibold text-black mb-6">Articles</h2>
+<div class="flex items-center justify-center overflow-x-auto shadow-lg rounded-lg" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+    <table class="min-w-full table-auto border-collapse bg-white">
+        <thead class="bg-black">
+            <tr>
+                <th class="px-6 py-3 text-left text-sm font-medium text-white">Titre</th>
+                <th class="px-6 py-3 text-left text-sm font-medium text-white">DateCreation</th>
+                <th class="px-6 py-3 text-left text-sm font-medium text-white">Statu</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php 
+            
+            if(is_array($toutarticles) || is_object($toutarticles)) {
+                foreach($toutarticles  as $toutarticle  ) {
+                    echo '<tr class="border-b hover:bg-gray-50">
+                        <td class="px-6 py-4 text-sm">'.$toutarticle['Titre'].'</td>
+                        <td class="px-6 py-4 text-sm">'.$toutarticle['DateCréation'].'</td>
+                        <td class="px-6 py-4 text-sm">'.$toutarticle['Statut'].'</td>
+                    </tr>';
+                }
+            } else {
+                echo "No articles found.";
+            }
+            ?>
+            
+        
+        </tbody>
+    </table>
+</div>
 
-                     <form method="POST" action="" class="flex space-x-2">
-                                <input type="hidden" name="id_article" value="<?php echo $activity['id_article']; ?>">
-                                <button name="action" value="accept" class="text-xl hover:scale-105">✅</button>
-                                <button name="actions" value="reject" class="text-xl hover:scale-105">❌</button>
-                            </form>
-            </div>
-        </div>
-        <?php endforeach; ?>
-
-    </div>
+</div>
 
  
 

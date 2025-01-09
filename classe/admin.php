@@ -150,8 +150,17 @@ require_once '../classe/user.php';
             return "Erreur lors de la suppression de la catégorie : " . $e->getMessage();
         }
     }
-
+    
+    public function afficheprofile() {
+        $sql = "SELECT Nom, Prenom, Email, ROLE FROM user";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+}
+
+    
 
 
 
@@ -160,6 +169,4 @@ require_once '../classe/user.php';
 
 
 
-
-
-
+    
