@@ -152,25 +152,28 @@ $profile= $admin->afficheprofile();
     
     <div class="p-8 sm:ml-80">
 
-<h2 class="text-4xl font-semibold text-black mb-6">Articles</h2>
 <div class="flex items-center justify-center overflow-x-auto shadow-lg rounded-lg" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
     <table class="min-w-full table-auto border-collapse bg-white">
         <thead class="bg-black">
             <tr>
-                <th class="px-6 py-3 text-left text-sm font-medium text-white">Titre</th>
-                <th class="px-6 py-3 text-left text-sm font-medium text-white">DateCreation</th>
-                <th class="px-6 py-3 text-left text-sm font-medium text-white">Statu</th>
+                <th class="px-6 py-3 text-left text-sm font-medium text-white">Nom</th>
+                <th class="px-6 py-3 text-left text-sm font-medium text-white">Prenom</th>
+                <th class="px-6 py-3 text-left text-sm font-medium text-white">Email</th>
+                <th class="px-6 py-3 text-left text-sm font-medium text-white">Role</th>
+
             </tr>
         </thead>
         <tbody>
             <?php 
             
-            if(is_array($toutarticles) || is_object($toutarticles)) {
-                foreach($toutarticles  as $toutarticle  ) {
+            if(is_array($profile) || is_object($profile)) {
+                foreach($profile  as $toutarticle  ) {
                     echo '<tr class="border-b hover:bg-gray-50">
-                        <td class="px-6 py-4 text-sm">'.$toutarticle['Titre'].'</td>
-                        <td class="px-6 py-4 text-sm">'.$toutarticle['DateCréation'].'</td>
-                        <td class="px-6 py-4 text-sm">'.$toutarticle['Statut'].'</td>
+                        <td class="px-6 py-4 text-sm">'.$toutarticle['Nom'].'</td>
+                        <td class="px-6 py-4 text-sm">'.$toutarticle['Prenom'].'</td>
+                        <td class="px-6 py-4 text-sm">'.$toutarticle['Email'].'</td>
+                        <td class="px-6 py-4 text-sm">'.$toutarticle['ROLE'].'</td>
+
                     </tr>';
                 }
             } else {

@@ -51,6 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_article'], $_POST[
     exit;
 }
 
+$comment= $admin->affichecommentaires();
+
 ?>
 
 <!DOCTYPE html>
@@ -155,20 +157,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id_article'], $_POST[
     <table class="min-w-full table-auto border-collapse bg-white">
         <thead class="bg-black">
             <tr>
-                <th class="px-6 py-3 text-left text-sm font-medium text-white">Titre</th>
-                <th class="px-6 py-3 text-left text-sm font-medium text-white">DateCreation</th>
-                <th class="px-6 py-3 text-left text-sm font-medium text-white">Statu</th>
+                <th class="px-6 py-3 text-left text-sm font-medium text-white">Commentaire</th>
             </tr>
         </thead>
         <tbody>
             <?php 
             
-            if(is_array($toutarticles) || is_object($toutarticles)) {
-                foreach($toutarticles  as $toutarticle  ) {
+            if(is_array($comment) || is_object($comment)) {
+                foreach($comment as $toutarticle  ) {
                     echo '<tr class="border-b hover:bg-gray-50">
-                        <td class="px-6 py-4 text-sm">'.$toutarticle['Titre'].'</td>
-                        <td class="px-6 py-4 text-sm">'.$toutarticle['DateCréation'].'</td>
-                        <td class="px-6 py-4 text-sm">'.$toutarticle['Statut'].'</td>
+                        <td class="px-6 py-4 text-sm">'.$toutarticle['contenu'].'</td>
                     </tr>';
                 }
             } else {
