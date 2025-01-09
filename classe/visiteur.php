@@ -49,4 +49,47 @@
                 return "Erreur lors de la récupération des articles : " . $e->getMessage();
             }
         }
+     
+       
+        
+            public function ajouterCommentaire($id_article, $id_user, $contenu) {
+                $query = "INSERT INTO Commentaires (id_article, id_user, contenu) VALUES (:id_article, :id_user, :contenu)";
+                $stmt = $this->db->prepare($query);
+                $stmt->bindParam(':id_article', $id_article, PDO::PARAM_STR);
+                $stmt->bindParam(':id_user', $id_user, PDO::PARAM_STR);
+                $stmt->bindParam(':contenu', $contenu, PDO::PARAM_STR);
+
+                if ($stmt->execute()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+
+
+
+
+    public function supprimercommentaires($id_co) {
+        $sql = "DELETE FROM Commentaires WHERE id_co = :id_co";
+        $stmt = $this->db->prepare($sql);
+        
+        if ($stmt === false) {
+            die("Erreur lors de la préparation de la requête : " . $this->db->error);
+        }
+
+        $stmt->bindValue(':id_co', $id_co, PDO::PARAM_INT);
+        $stmt->execute();
+        if ($stmt->execute()) {
+            echo "Commentaire supprimé avec succès.";
+        } else {
+            echo "Erreur lors de la suppression du commentaire : " . $stmt->error;
+        }
+
+        // $stmt->close();
     }
+}
+
+
+        
+        
+    

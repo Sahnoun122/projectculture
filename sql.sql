@@ -47,6 +47,7 @@ CREATE TABLE Commentaires (
     FOREIGN KEY (id_user) REFERENCES user(id_user) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+
 CREATE VIEW Vue_Articles_Commentaires AS
 SELECT 
     articles.id_article AS Article_ID,
@@ -63,7 +64,17 @@ GROUP BY
 ORDER BY 
     Nombre_Commentaires DESC;
 
-    
+
+CREATE TABLE Logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    action VARCHAR(50), -- Type d'action (ex: suppression)
+    id_article INT, -- L'article supprimé
+    titre_article VARCHAR(100), -- Le titre de l'article supprimé
+    date_action DATETIME -- Date et heure de l'action
+);
+
+
+
 
 
 

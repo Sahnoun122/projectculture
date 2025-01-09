@@ -132,7 +132,7 @@ $user = $stmt2->fetchAll(PDO::FETCH_ASSOC);
             <option value="all">Tous</option>
             <?php
             foreach ($result as $row) {
-                echo "<option value=\"" . $row['id_category'] . "\">" . $row['Nom'] . "</option>";
+                echo "<option value=\"" . $row['Nom'] . "\">" . $row['Nom'] . "</option>";
             }
             ?>
         </select>
@@ -156,7 +156,7 @@ $user = $stmt2->fetchAll(PDO::FETCH_ASSOC);
             <div class="p-6">
                 <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo htmlspecialchars($activity['Titre'], ENT_QUOTES, 'UTF-8'); ?></h3>
                 <p class="text-lg text-white"><?php echo htmlspecialchars($activity['Contenu'], ENT_QUOTES, 'UTF-8'); ?></p>
-                <img src="<?php echo htmlspecialchars($activity['Image'], ENT_QUOTES, 'UTF-8'); ?>" alt="Activity Photo" class="w-full h-48 object-cover">
+                <a href="details.php"><img src="<?php echo htmlspecialchars($activity['Image'], ENT_QUOTES, 'UTF-8'); ?>" alt="Activity Photo" class="w-full h-48 object-cover">                </a>
                 <p class="text-lg text-white"><?php echo htmlspecialchars($activity['category_name'], ENT_QUOTES, 'UTF-8'); ?></p>
 
                
