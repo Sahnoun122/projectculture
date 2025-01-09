@@ -68,28 +68,26 @@
 
 
 
-
-    public function supprimercommentaires($id_co) {
-        $sql = "DELETE FROM Commentaires WHERE id_co = :id_co";
-        $stmt = $this->db->prepare($sql);
-        
-        if ($stmt === false) {
-            die("Erreur lors de la préparation de la requête : " . $this->db->error);
-        }
-
-        $stmt->bindValue(':id_co', $id_co, PDO::PARAM_INT);
-        $stmt->execute();
-        if ($stmt->execute()) {
-            echo "Commentaire supprimé avec succès.";
-        } else {
-            echo "Erreur lors de la suppression du commentaire : " . $stmt->error;
-        }
-
-        // $stmt->close();
-    }
+            public function supprimercommentaires($id_co) {
+                try {
+                    $sql = "DELETE FROM Commentaires WHERE id_co = :id_co";
+                    $stmt = $this->db->prepare($sql);
+                    $stmt->bindValue(':id_co', $id_co, PDO::PARAM_INT);
+                    $stmt->execute();
+                } catch (PDOException $e) {
+                    return "Erreur lors de la suppression du commentaire : " . $e->getMessage();
+                }
+            }
 }
 
 
         
         
     
+
+
+
+
+
+
+

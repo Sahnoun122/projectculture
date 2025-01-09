@@ -59,15 +59,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contenu'])) {
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
-
-    $id_article = $_POST['delete'];
-    $id_co =  $_SESSION['id_user'];
-
+    $id_co = $_POST['delete'];
+    
     $visiteur->supprimercommentaires($id_co);
-
-    header("Location:details.php");
+    
+    header("Location: details.php");
     exit;
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -173,6 +172,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
 
             
             <?php
+
+
     $sql3 = "SELECT * FROM Commentaires";
      $stmt3 = $pdo->prepare($sql3);
      $stmt3->execute();
@@ -183,10 +184,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
            <div class="p-6 grid">
                <h6 class="text-2xl mb-4 font-semibold text-black"><?php echo $activity['contenu']; ?></h6>
                <form method="POST" onsubmit="return confirm('Are you sure you want to delete this activity?');">
-                   <div class="flex items-center justify-center mt-4">
-                       <button type="submit" class="text-xl hover:scale-105" name="delete" value="<?php echo $activity['id_co']; ?>">🗑️</button>
-                   </div>
-               </form>
+    <div class="flex items-center justify-center mt-4">
+        <button type="submit" class="text-xl hover:scale-105" name="delete" value="<?php echo $activity['id_co']; ?>">🗑️</button>
+    </div>
+</form>
            </div>
        </div>
        <?php endforeach; ?>
