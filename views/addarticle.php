@@ -3,6 +3,8 @@
 require_once '../classe/classe.php';
 require_once '../database/db.php';
 require_once '../classe/article.php';
+require_once '../classe/admin.php';
+
 require_once '../classe/artiste.php';
 
 session_start();
@@ -25,6 +27,8 @@ $pdo = $db->getConnection();
 $article = new  Auteur($pdo);
 $use= new  Visiteur($pdo);
 
+$user = new User($pdo);
+$admin = new Admin($pdo);
 
 if (isset($_POST['id_user'])) {
     $id_auteur = $_POST['id_user'];
@@ -80,6 +84,10 @@ $stmt1 = $pdo->prepare($sql1);
 $stmt1->execute();
 
 $result1 = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+$comment= $admin->affichecommentaires();
 
 ?>
 
@@ -183,6 +191,46 @@ $result1 = $stmt1->fetchAll(PDO::FETCH_ASSOC);
         <?php endforeach; ?>
     </div>
 </div>
+
+<div class="flex items-center justify-center overflow-x-auto shadow-lg rounded-lg" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+    <table class="min-w-full table-auto border-collapse bg-white">
+        <thead class="bg-black">
+            <tr>
+                <th class="px-6 py-3 text-left text-sm font-medium text-white">Commentaire</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php 
+if (is_array($comment) || is_object($comment)) {
+    foreach ($comment as $toutarticle) {
+        if (isset($toutarticle['id_co'])) {
+            echo '<tr class="border-b hover:bg-gray-50">
+                <td class="px-6 py-4 text-sm">'.$toutarticle['contenu'].'</td>
+                <td class="px-6 py-4 text-sm">
+                    <form method="post" action="">
+                        <input type="hidden" name="delete" value="'.$toutarticle['id_co'].'">
+                        <button type="submit" class="bg-red-500 text-white px-3 py-1">Supprimer</button>
+                    </form>
+                </td>
+            </tr>';
+        } else {
+            echo '<tr class="border-b hover:bg-gray-50">
+                <td class="px-6 py-4 text-sm" colspan="2">ID du commentaire non trouvé.</td>
+            </tr>';
+        }
+    }
+} else {
+    echo "No articles found.";
+}
+?>
+
+
+            
+        
+        </tbody>
+    </table>
+</div>
+
 
 
 <!-- Main -->
