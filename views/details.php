@@ -64,9 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
     exit;
 }
 
-
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'toggleLike') {
     $id_article = $_POST['id_article'];
     $result = $visiteur->toggleLike($id_article);
@@ -114,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'toggleLike') 
       <ul class="space-y-2 font-medium px-3 pb-4">
        
         <li>
-            <a href="dashvisit.php" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-100 hover:text-black group">
+            <a href="details.php" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-100 hover:text-black group">
                <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                   <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
                   <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
@@ -154,6 +151,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'toggleLike') 
 
 
     <h2 class="text-4xl font-semibold text-black mb-6">Articles</h2>
+    
+    
+    <form class="max-w-md mx-auto" id="searchForm">
+    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+    <div class="relative">
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+        </div>
+        <input type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Recherche article ou auteur" required />
+        <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
+    </div>
+</form>
+
+
+<div id="results"></div>
+
+
+<form method="POST" class="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
+        <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an option</label>
+        <select id="categoryFilter" onchange="filterArticles()" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+            <option value="all">Tous</option>
+            <?php
+            foreach ($result as $row) {
+                echo "<option value=\"" . $row['Nom'] . "\">" . $row['Nom'] . "</option>";
+            }
+            ?>
+        </select>
+
+    
+    </form>
 
     <div class="" id="articlesContainer" style="align-items: start;">
         <?php
@@ -173,6 +202,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'toggleLike') 
 
                
             </div>
+
+
+
             <form method="POST">
                 <input type="hidden" name="action" value="toggleLike">
                 <input type="hidden" name="id_article" value="<?php echo $activity['id_article']; ?>">
@@ -185,6 +217,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'toggleLike') 
                     </button>
                 </div>
             </form>
+        </div>
+
+        <div>
+
+<?php
+
+
+                $sql3 = "SELECT * FROM Commentaires";
+                $stmt3 = $pdo->prepare($sql3);
+                $stmt3->execute();
+                $user = $stmt3->fetchAll(PDO::FETCH_ASSOC);
+                foreach ( $user  as $activity):
+                ?>
+                <div class="" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+                <div class="p-6 grid">
+                <h6 class="text-2xl mb-4 font-semibold text-black"><?php echo $activity['contenu']; ?></h6>
+                <form method="POST" onsubmit="return confirm('Are you sure you want to delete this activity?');">
+                <div class="flex items-center justify-center mt-4">
+                <button type="submit" class="text-xl hover:scale-105" name="delete" value="<?php echo $activity['id_co']; ?>">🗑️</button>
+                </div>
+                </form>
+                </div>
+                </div>
+                <?php endforeach; ?>
+                </div>
 
 
             <button type="button" onclick="pdf()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Téléchargé</button>
@@ -193,30 +250,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'toggleLike') 
 <br>
 <br>
 <br>
-            <div>
-
-            
-            <?php
-
-
-    $sql3 = "SELECT * FROM Commentaires";
-     $stmt3 = $pdo->prepare($sql3);
-     $stmt3->execute();
-     $user = $stmt3->fetchAll(PDO::FETCH_ASSOC);
-       foreach ( $user  as $activity):
-       ?>
-       <div class="" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
-           <div class="p-6 grid">
-               <h6 class="text-2xl mb-4 font-semibold text-black"><?php echo $activity['contenu']; ?></h6>
-               <form method="POST" onsubmit="return confirm('Are you sure you want to delete this activity?');">
-    <div class="flex items-center justify-center mt-4">
-        <button type="submit" class="text-xl hover:scale-105" name="delete" value="<?php echo $activity['id_co']; ?>">🗑️</button>
-    </div>
-</form>
-           </div>
-       </div>
-       <?php endforeach; ?>
-            </div>
 
 
 <form method="POST" class="max-w-md mx-auto"> 
@@ -248,6 +281,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'toggleLike') 
 
 
 
+// function filterArticles() {
+//     let filter = document.getElementById("categoryFilter").value;
+//     let articles = document.querySelectorAll("#articlesContainer > div");
+
+//     articles.forEach(article => {
+//         if (filter === "all" || article.getAttribute("data-category") === filter) {
+//             article.style.display = "block";
+//         } else {
+//             article.style.display = "none";
+//         }
+//     });
+// }
+
+AOS.init();
+
+
+
+
 function filterArticles() {
     let filter = document.getElementById("categoryFilter").value;
     let articles = document.querySelectorAll("#articlesContainer > div");
@@ -261,130 +312,22 @@ function filterArticles() {
     });
 }
 
-AOS.init();
+document.getElementById('searchForm').addEventListener('submit', function(event) {
+    event.preventDefault();
 
-
-// function pdf(){
-//     var pdfObject = jsPDFInvoiceTemplate.default(props); //returns number of pages created
-//    console.log("nbdnbz" ,  pdfObject );
-// }
-// var props = {
-//     outputType:  jsPDFInvoiceTemplate.OutputType.Save,
-//     onJsPDFDocCreation?: (jsPDFDoc: jsPDF) => void, //Allows for additional configuration prior to writing among others, adds support for different languages and symbols
-//     returnJsPDFDocObject: true,
-//     fileName: "Invoice 2021",
-//     orientationLandscape: false,
-//     compress: true,
-//     logo: {
-//         src: "https://raw.githubusercontent.com/edisonneza/jspdf-invoice-template/demo/images/logo.png",
-//         type: 'PNG', //optional, when src= data:uri (nodejs case)
-//         width: 53.33, //aspect ratio = width/height
-//         height: 26.66,
-//         margin: {
-//             top: 0, //negative or positive num, from the current position
-//             left: 0 //negative or positive num, from the current position
-//         }
-//     },
-//     stamp: {
-//         inAllPages: true, //by default = false, just in the last page
-//         src: "https://raw.githubusercontent.com/edisonneza/jspdf-invoice-template/demo/images/qr_code.jpg",
-//         type: 'JPG', //optional, when src= data:uri (nodejs case)
-//         width: 20, //aspect ratio = width/height
-//         height: 20,
-//         margin: {
-//             top: 0, //negative or positive num, from the current position
-//             left: 0 //negative or positive num, from the current position
-//         }
-//     },
-//     business: {
-//         name: "Business Name",
-//         address: "Albania, Tirane ish-Dogana, Durres 2001",
-//         phone: "(+355) 069 11 11 111",
-//         email: "email@example.com",
-//         email_1: "info@example.al",
-//         website: "www.example.al",
-//     },
-//     contact: {
-//         label: "Invoice issued for:",
-//         name: "Client Name",
-//         address: "Albania, Tirane, Astir",
-//         phone: "(+355) 069 22 22 222",
-//         email: "client@website.al",
-//         otherInfo: "www.website.al",
-//     },
-//     invoice: {
-//         label: "Invoice #: ",
-//         num: 19,
-//         invDate: "Payment Date: 01/01/2021 18:12",
-//         invGenDate: "Invoice Date: 02/02/2021 10:17",
-//         headerBorder: false,
-//         tableBodyBorder: false,
-//         header: [
-//           {
-//             title: "#", 
-//             style: { 
-//               width: 10 
-//             } 
-//           }, 
-//           { 
-//             title: "Title",
-//             style: {
-//               width: 30
-//             } 
-//           }, 
-//           { 
-//             title: "Description",
-//             style: {
-//               width: 80
-//             } 
-//           }, 
-//           { title: "Price"},
-//           { title: "Quantity"},
-//           { title: "Unit"},
-//           { title: "Total"}
-//         ],
-//         table: Array.from(Array(10), (item, index)=>([
-//             index + 1,
-//             "There are many variations ",
-//             "Lorem Ipsum is simply dummy text dummy text ",
-//             200.5,
-//             4.5,
-//             "m2",
-//             400.5
-//         ])),
-//         additionalRows: [{
-//             col1: 'Total:',
-//             col2: '145,250.50',
-//             col3: 'ALL',
-//             style: {
-//                 fontSize: 14 //optional, default 12
-//             }
-//         },
-//         {
-//             col1: 'VAT:',
-//             col2: '20',
-//             col3: '%',
-//             style: {
-//                 fontSize: 10 //optional, default 12
-//             }
-//         },
-//         {
-//             col1: 'SubTotal:',
-//             col2: '116,199.90',
-//             col3: 'ALL',
-//             style: {
-//                 fontSize: 10 //optional, default 12
-//             }
-//         }],
-//         invDescLabel: "Invoice Note",
-//         invDesc: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary.",
-//     },
-//     footer: {
-//         text: "The invoice is created on a computer and is valid without the signature and stamp.",
-//     },
-//     pageEnable: true,
-//     pageLabel: "Page ",
-// };
+    let searchQuery = document.getElementById('default-search').value.toLowerCase();
+    let articlesContainer = document.getElementById('articlesContainer');
+    let articles = articlesContainer.getElementsByClassName('bg-black');
+    
+    for (var i = 0; i < articles.length; i++) {
+        var articleTitle = articles[i].getElementsByTagName('h3')[0].textContent.toLowerCase();
+        if (articleTitle.includes(searchQuery)) {
+            articles[i].style.display = 'block';
+        } else {
+            articles[i].style.display = 'none';
+        }
+    }
+});
 
 </script>
 

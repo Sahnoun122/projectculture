@@ -47,6 +47,39 @@ $user = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 $visitor = $visiteur->getUserData();
 
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['contenu'])) {
+    $contenu= $_POST['contenu'];
+    $id_user =  $_SESSION['id_user'];
+    $id_article =  $_SESSION['id_article'];
+
+   
+    $visiteur->ajouterCommentaire($id_article, $id_user, $contenu) ;
+    header("Location: details.php");
+    exit;
+}
+
+$visitor = $visiteur->getUserData();
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
+    $id_co = $_POST['delete'];
+    
+    $visiteur->supprimercommentaires($id_co);
+    
+    header("Location: details.php");
+    exit;
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'toggleLike') {
+    $id_article = $_POST['id_article'];
+    $result = $visiteur->toggleLike($id_article);
+    header("Location: details.php");
+    exit;
+  }
+
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -153,7 +186,7 @@ $visitor = $visiteur->getUserData();
 
     <h2 class="text-4xl font-semibold text-black mb-6">Articles</h2>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12" id="articlesContainer" style="align-items: start;">
+    <div class="" id="articlesContainer" style="align-items: start;">
         <?php
         $activities_sql = "SELECT articles.*, category.nom  AS category_name FROM articles JOIN category ON articles.id_category = category.id_category ";
         
@@ -162,12 +195,12 @@ $visitor = $visiteur->getUserData();
 
         foreach ($activities as $activity):
         ?>
-        <div class="bg-black shadow-lg rounded-lg overflow-hidden" data-category="<?php echo htmlspecialchars($activity['id_category'], ENT_QUOTES, 'UTF-8'); ?>" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+        <div class="" data-category="<?php echo htmlspecialchars($activity['id_category'], ENT_QUOTES, 'UTF-8'); ?>" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
             <div class="p-6">
-                <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo htmlspecialchars($activity['Titre'], ENT_QUOTES, 'UTF-8'); ?></h3>
-                <p class="text-lg text-white"><?php echo htmlspecialchars($activity['Contenu'], ENT_QUOTES, 'UTF-8'); ?></p>
+                <h3 class="text-4xl mb-4 font-semibold text-black"><?php echo htmlspecialchars($activity['Titre'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                <p class="text-lg text-black"><?php echo htmlspecialchars($activity['Contenu'], ENT_QUOTES, 'UTF-8'); ?></p>
                 <a href="details.php"><img src="<?php echo htmlspecialchars($activity['Image'], ENT_QUOTES, 'UTF-8'); ?>" alt="Activity Photo" class="w-full h-48 object-cover">                </a>
-                <p class="text-lg text-white"><?php echo htmlspecialchars($activity['category_name'], ENT_QUOTES, 'UTF-8'); ?></p>
+                <p class="text-lg text-black"><?php echo htmlspecialchars($activity['category_name'], ENT_QUOTES, 'UTF-8'); ?></p>
 
                
             </div>
@@ -175,8 +208,62 @@ $visitor = $visiteur->getUserData();
         <?php endforeach; ?>
     </div>
 </div>
-</div>
 
+            
+<form method="POST">
+                <input type="hidden" name="action" value="toggleLike">
+                <input type="hidden" name="id_article" value="<?php echo $activity['id_article']; ?>">
+                <div class="flex items-center gap-3">
+                    <button type="submit" class="like-btn">
+                        <?php
+                        $liked = $visiteur->hasLiked($activity['id_article']);
+                        echo $liked ? 'Unlike' : 'Like';
+                        ?>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div>
+
+<?php
+
+
+                $sql3 = "SELECT * FROM Commentaires";
+                $stmt3 = $pdo->prepare($sql3);
+                $stmt3->execute();
+                $user = $stmt3->fetchAll(PDO::FETCH_ASSOC);
+                foreach ( $user  as $activity):
+                ?>
+                <div class="" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+                <div class="p-6 grid">
+                <h6 class="text-2xl mb-4 font-semibold text-black"><?php echo $activity['contenu']; ?></h6>
+                <form method="POST" onsubmit="return confirm('Are you sure you want to delete this activity?');">
+                <div class="flex items-center justify-center mt-4">
+                <button type="submit" class="text-xl hover:scale-105" name="delete" value="<?php echo $activity['id_co']; ?>">🗑️</button>
+                </div>
+                </form>
+                </div>
+                </div>
+                <?php endforeach; ?>
+                </div>
+
+
+
+                <form method="POST" class="max-w-md mx-auto"> 
+    
+  
+
+    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">commenté</label>
+    <div class="relative">
+        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+        </div>
+        <input type="search" name="contenu" id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="ajouter commentaire" required />
+        <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Commenté</button>
+    </div>
+</form>
 <script>
 
 

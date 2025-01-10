@@ -174,7 +174,7 @@ $comment= $admin->affichecommentaires();
             <div class="p-6">
                 <h3 class="text-4xl mb-4 font-semibold text-black"><?php echo htmlspecialchars($activity['Titre'], ENT_QUOTES, 'UTF-8'); ?></h3>
                 <p class="text-lg text-black"><?php echo htmlspecialchars($activity['Contenu'], ENT_QUOTES, 'UTF-8'); ?></p>
-                <a href="details.php"><img src="<?php echo htmlspecialchars($activity['Image'], ENT_QUOTES, 'UTF-8'); ?>" alt="Activity Photo" class="w-full h-48 object-cover">                </a>
+                <a href="#"><img src="<?php echo htmlspecialchars($activity['Image'], ENT_QUOTES, 'UTF-8'); ?>" alt="Activity Photo" class="w-full h-48 object-cover">                </a>
                 <p class="text-lg text-black"><?php echo htmlspecialchars($activity['category_name'], ENT_QUOTES, 'UTF-8'); ?></p>
 
                 <form method="POST"  action="modifierarticle.php">
