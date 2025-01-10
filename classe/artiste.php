@@ -71,7 +71,7 @@
             }
         }
 
-        
+
         public function getartisteData() {
             $id_user = $_SESSION['id_user'];
             $query = "SELECT * FROM user WHERE id_user = :id_user";
@@ -80,5 +80,14 @@
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
 
+       
+        public function getArticleById($id_article) {
+            $id_user = $_SESSION['id_article'];
+            $query = "SELECT * FROM articles WHERE id_article = :id_article";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindParam(":id_article", $id_article, PDO::PARAM_INT);
+            $stmt->execute([':id_article' => $id_user]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
 
     }

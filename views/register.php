@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $file_extension =pathinfo($_FILES['PROFILE']["name"], PATHINFO_EXTENSION);
     $new_image_name= $PROFILE .'_'. date("Ymd_His").'.'. $file_extension;
    
-    $target_direct= "../assets/scriptsql/uploade";
+    $target_direct= "C:\laragon\www\culture\assets\scriptsql\uploade";
     $target_path = $target_direct . $new_image_name;
     if(!move_uploaded_file($_FILES['PROFILE']["tmp_name"],$target_path)){
          header("Location:register.php");

@@ -53,22 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['Titre'])) {
     exit;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
-    $id_auteur = $_SESSION['modifie'];
-    $titre = $_POST['Titre'];
-    $contenu = $_POST['Contenu'];
-    $Image = $_POST['Image'];
-    $id_category = $_POST['id_category'];
-    $id_tag = $_POST['id_tag'];
-
-
-
-    $article-> modifierArticle($id_article, $titre, $contenu, $image, $id_category , $id_tag);
-
-    header("Location: addarticle.php");
-    exit;
-}
-
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
@@ -193,13 +177,12 @@ $result1 = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
                 </form>
             </div>
+
+            
         </div>
         <?php endforeach; ?>
     </div>
 </div>
-
-
-
 
 
 <!-- Main -->
