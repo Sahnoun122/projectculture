@@ -1,3 +1,4 @@
+
 <?php
 
 require_once '../classe/classe.php';
@@ -19,31 +20,27 @@ $db = new DbConnection();
 $pdo = $db->getConnection();
 
 
-$article = new  Auteur($pdo);
-$use= new  Visiteur($pdo);
+$article = new Auteur($pdo);
+$use = new Visiteur($pdo);
 
 
-if (isset($_POST['id_user'])) {
-    $id_auteur = $_POST['id_user'];
+if (isset($_GET['id_user'])) {
+    $id_auteur = $_GET['id_user'];
 } else {
-    
     $id_auteur = null;
 }
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $id_article = $_POST['id_article'];
-    $titre = $_POST['titre'];
-    $contenu = $_POST['contenu'];
-    $image = $_POST['image'];
-    $id_category = $_POST['id_category'];
-    $id_tag = $_POST['id_tag'];
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $id_article = $_GET['id_article'];
+    $titre = $_GET['titre'];
+    $contenu = $_GET['contenu'];
+    $image = $_GET['image'];
+    $id_category = $_GET['id_category'];
+    $id_tag = $_GET['id_tag'];
 
     $article->modifierArticle($id_article, $titre, $contenu, $image, $id_category, $id_tag);
 
     header("Location: addarticle.php");
     exit;
 }
-
-
-
 ?>

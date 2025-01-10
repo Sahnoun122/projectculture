@@ -15,21 +15,18 @@ echo  $_SESSION['id_user'];
 $db = new DbConnection();
 $pdo = $db->getConnection();
 
+$article = new Auteur($pdo);
+$use = new Visiteur($pdo);
 
-$article = new  Auteur($pdo);
-$use= new  Visiteur($pdo);
 
-
-if (isset($_POST['id_user'])) {
-    $id_auteur = $_POST['id_user'];
+if (isset($_GET['id_user'])) {
+    $id_auteur = $_GET['id_user'];
 } else {
-    
     $id_auteur = null;
 }
 
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
-    $id_article = $_POST['modifie'];
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['modifie'])) {
+    $id_article = $_GET['modifie'];
 
     $article = $article->getid($id_article);
 
@@ -56,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
 
     <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow">
         <h2 class="text-2xl font-bold mb-6">Modifier Article</h2>
-        <form action="updateartile.php" method="post">
+        <form action="updateartile.php" method="get">
             <input type="hidden" name="id_article" value="<?php echo htmlspecialchars($article['id_article']); ?>">
             <div class="mb-4">
                 <label for="titre" class="block text-gray-700 font-semibold">Titre:</label>
@@ -79,10 +76,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
                 <input type="number" id="id_tag" name="id_tag" value="<?php echo htmlspecialchars($article['id_tag']); ?>" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-300">
             </div>
             <div class="flex justify-end">
-                <input type="submit" value="Modifier" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
+                <input type="submit" value="modifie" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300">
             </div>
         </form>
     </div>
 
 </body>
 </html>
+
+
