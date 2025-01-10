@@ -47,6 +47,16 @@ CREATE TABLE Commentaires (
     FOREIGN KEY (id_user) REFERENCES user(id_user) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+CREATE TABLE likes (
+    id_like INT AUTO_INCREMENT PRIMARY KEY,
+    id_article INT NOT NULL,
+    id_user INT NOT NULL,
+    FOREIGN KEY (id_article) REFERENCES articles(id_article) ON DELETE CASCADE ON UPDATE CASCADE ,
+    FOREIGN KEY (id_user) REFERENCES user(id_user) ON DELETE CASCADE ON UPDATE CASCADE 
+);
+
+
+
 
 CREATE VIEW Vue_Articles_Commentaires AS
 SELECT 

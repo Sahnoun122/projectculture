@@ -2,10 +2,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['id_user']) || !isset($_SESSION['role']) || $_SESSION['role'] !== 'visiteur') {
-    header("Location: connecter.php");
-    exit;
-}
+
 
 require_once '../classe/classe.php';
 require_once '../classe/visiteur.php';
@@ -66,6 +63,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
     header("Location: details.php");
     exit;
 }
+
+
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['action'] === 'toggleLike') {
+    $id_article = $_POST['id_article'];
+    $result = $visiteur->toggleLike($id_article);
+    header("Location: details.php");
+    exit;
+  }
+
+
 
 ?>
 
@@ -164,6 +173,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
 
                
             </div>
+            <form method="POST">
+                <input type="hidden" name="action" value="toggleLike">
+                <input type="hidden" name="id_article" value="<?php echo $activity['id_article']; ?>">
+                <div class="flex items-center gap-3">
+                    <button type="submit" class="like-btn">
+                        <?php
+                        $liked = $visiteur->hasLiked($activity['id_article']);
+                        echo $liked ? 'Unlike' : 'Like';
+                        ?>
+                    </button>
+                </div>
+            </form>
+
+
+            <button type="button" onclick="pdf()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Téléchargé</button>
+
             
 <br>
 <br>
@@ -216,6 +241,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete'])) {
 </div>
 </div>
 
+
+<script src="https://unpkg.com/jspdf-invoice-template@1.4.0/dist/index.js"></script>
+
 <script>
 
 
@@ -234,6 +262,130 @@ function filterArticles() {
 }
 
 AOS.init();
+
+
+// function pdf(){
+//     var pdfObject = jsPDFInvoiceTemplate.default(props); //returns number of pages created
+//    console.log("nbdnbz" ,  pdfObject );
+// }
+// var props = {
+//     outputType:  jsPDFInvoiceTemplate.OutputType.Save,
+//     onJsPDFDocCreation?: (jsPDFDoc: jsPDF) => void, //Allows for additional configuration prior to writing among others, adds support for different languages and symbols
+//     returnJsPDFDocObject: true,
+//     fileName: "Invoice 2021",
+//     orientationLandscape: false,
+//     compress: true,
+//     logo: {
+//         src: "https://raw.githubusercontent.com/edisonneza/jspdf-invoice-template/demo/images/logo.png",
+//         type: 'PNG', //optional, when src= data:uri (nodejs case)
+//         width: 53.33, //aspect ratio = width/height
+//         height: 26.66,
+//         margin: {
+//             top: 0, //negative or positive num, from the current position
+//             left: 0 //negative or positive num, from the current position
+//         }
+//     },
+//     stamp: {
+//         inAllPages: true, //by default = false, just in the last page
+//         src: "https://raw.githubusercontent.com/edisonneza/jspdf-invoice-template/demo/images/qr_code.jpg",
+//         type: 'JPG', //optional, when src= data:uri (nodejs case)
+//         width: 20, //aspect ratio = width/height
+//         height: 20,
+//         margin: {
+//             top: 0, //negative or positive num, from the current position
+//             left: 0 //negative or positive num, from the current position
+//         }
+//     },
+//     business: {
+//         name: "Business Name",
+//         address: "Albania, Tirane ish-Dogana, Durres 2001",
+//         phone: "(+355) 069 11 11 111",
+//         email: "email@example.com",
+//         email_1: "info@example.al",
+//         website: "www.example.al",
+//     },
+//     contact: {
+//         label: "Invoice issued for:",
+//         name: "Client Name",
+//         address: "Albania, Tirane, Astir",
+//         phone: "(+355) 069 22 22 222",
+//         email: "client@website.al",
+//         otherInfo: "www.website.al",
+//     },
+//     invoice: {
+//         label: "Invoice #: ",
+//         num: 19,
+//         invDate: "Payment Date: 01/01/2021 18:12",
+//         invGenDate: "Invoice Date: 02/02/2021 10:17",
+//         headerBorder: false,
+//         tableBodyBorder: false,
+//         header: [
+//           {
+//             title: "#", 
+//             style: { 
+//               width: 10 
+//             } 
+//           }, 
+//           { 
+//             title: "Title",
+//             style: {
+//               width: 30
+//             } 
+//           }, 
+//           { 
+//             title: "Description",
+//             style: {
+//               width: 80
+//             } 
+//           }, 
+//           { title: "Price"},
+//           { title: "Quantity"},
+//           { title: "Unit"},
+//           { title: "Total"}
+//         ],
+//         table: Array.from(Array(10), (item, index)=>([
+//             index + 1,
+//             "There are many variations ",
+//             "Lorem Ipsum is simply dummy text dummy text ",
+//             200.5,
+//             4.5,
+//             "m2",
+//             400.5
+//         ])),
+//         additionalRows: [{
+//             col1: 'Total:',
+//             col2: '145,250.50',
+//             col3: 'ALL',
+//             style: {
+//                 fontSize: 14 //optional, default 12
+//             }
+//         },
+//         {
+//             col1: 'VAT:',
+//             col2: '20',
+//             col3: '%',
+//             style: {
+//                 fontSize: 10 //optional, default 12
+//             }
+//         },
+//         {
+//             col1: 'SubTotal:',
+//             col2: '116,199.90',
+//             col3: 'ALL',
+//             style: {
+//                 fontSize: 10 //optional, default 12
+//             }
+//         }],
+//         invDescLabel: "Invoice Note",
+//         invDesc: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary.",
+//     },
+//     footer: {
+//         text: "The invoice is created on a computer and is valid without the signature and stamp.",
+//     },
+//     pageEnable: true,
+//     pageLabel: "Page ",
+// };
+
 </script>
 
 

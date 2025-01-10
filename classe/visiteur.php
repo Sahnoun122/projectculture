@@ -78,6 +78,42 @@
                     return "Erreur lors de la suppression du commentaire : " . $e->getMessage();
                 }
             }
+
+
+
+
+
+     // Toggle like functionality
+     public function toggleLike($id_article) {
+        $id_user = $_SESSION['id_user'];
+
+        $sql = "SELECT * FROM likes WHERE id_article = :id_article AND id_user = :id_user";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id_article' => $id_article, ':id_user' => $id_user]);
+
+        if ($stmt->rowCount() > 0) {
+            // User has already liked the article, so remove the like
+            $sql = "DELETE FROM likes WHERE id_article = :id_article AND id_user = :id_user";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([':id_article' => $id_article, ':id_user' => $id_user]);
+        } else {
+            // User hasn't liked the article, so add a like
+            $sql = "INSERT INTO likes (id_article, id_user) VALUES (:id_article, :id_user)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([':id_article' => $id_article, ':id_user' => $id_user]);
+        }
+    }
+
+    // Check if the user has already liked the article
+    public function hasLiked($id_article) {
+        $id_user = $_SESSION['id_user'];
+        $sql = "SELECT * FROM likes WHERE id_article = :id_article AND id_user = :id_user";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([':id_article' => $id_article, ':id_user' => $id_user]);
+
+        return $stmt->rowCount() > 0;
+    }
+
 }
 
 

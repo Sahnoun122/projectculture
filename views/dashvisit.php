@@ -111,8 +111,7 @@ $user = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 <div class="p-8 sm:ml-80">
     <h2 class="text-4xl font-semibold text-black mb-6">Articles</h2>
 
-    
-<form class="max-w-md mx-auto">   
+    <form class="max-w-md mx-auto" id="searchForm">
     <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
     <div class="relative">
         <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
@@ -124,6 +123,9 @@ $user = $stmt2->fetchAll(PDO::FETCH_ASSOC);
         <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Search</button>
     </div>
 </form>
+
+
+<div id="results"></div>
 
 
     <form method="POST" class="w-full mt-6 mr-0 mb-0 ml-0 relative space-y-8">
@@ -183,6 +185,25 @@ function filterArticles() {
         }
     });
 }
+
+document.getElementById('searchForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    let searchQuery = document.getElementById('default-search').value.toLowerCase();
+    let articlesContainer = document.getElementById('articlesContainer');
+    let articles = articlesContainer.getElementsByClassName('bg-black');
+    
+    for (var i = 0; i < articles.length; i++) {
+        var articleTitle = articles[i].getElementsByTagName('h3')[0].textContent.toLowerCase();
+        if (articleTitle.includes(searchQuery)) {
+            articles[i].style.display = 'block';
+        } else {
+            articles[i].style.display = 'none';
+        }
+    }
+});
+
+
 
 AOS.init();
 </script>
