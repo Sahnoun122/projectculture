@@ -58,11 +58,6 @@ class User{
         $this->Motdepasse = password_hash($Motdepasse,PASSWORD_DEFAULT);
     }
 
-
-
-
-
-
     
     public function user($id_user) {
         try{

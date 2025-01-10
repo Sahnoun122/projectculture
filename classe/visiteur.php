@@ -16,6 +16,7 @@
             $this->db = $db;
         }
 
+
         public function voirArticles(){
             try {
                 $sql = "SELECT * FROM articles ORDER BY DateCréation DESC";
@@ -66,6 +67,13 @@
                 }
             }
 
+            public function getUserData() {
+                $id_user = $_SESSION['id_user'];
+                $query = "SELECT * FROM user WHERE id_user = :id_user";
+                $stmt = $this->db->prepare($query);
+                $stmt->execute([':id_user' => $id_user]);
+                return $stmt->fetch(PDO::FETCH_ASSOC);
+            }
 
 
             public function supprimercommentaires($id_co) {
