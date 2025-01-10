@@ -23,6 +23,7 @@ $pdo = $db->getConnection();
 $user = new User($pdo);
 $admin = new Admin($pdo);
 
+$visitor =$user->getartisteData() ;
 
 
 if (isset($_POST['id_user'])) {
@@ -98,11 +99,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modifie'])) {
     <div class="h-full overflow-y-auto bg-black">
     <!-- Sidebar Menu -->
     <div class="flex flex-col items-center mt-6 -mx-2">
-        <img class="object-cover w-24 h-24 mx-2 rounded-full" src="<?php echo $_SESSION['profile'] ?>" alt="<?php echo $_SESSION['profile'] ?>">
-        <h4 class="mx-2 mt-2 font-medium" style="color: white;"><?php echo $_SESSION['Nom']?></h4>
+        <img class="object-cover w-24 h-24 mx-2 rounded-full" src="<?php echo $visitor['profile'] ?>" alt="avatar">
+        <h4 class="mx-2 mt-2 font-medium" style="color: white;"><?php echo $visitor['Nom'] ?></h4>
         <p class="mx-2 mt-1 text-sm font-medium" style="color: white;"><?php echo $_SESSION['email']?></p>
     </div>
-
       <ul class="space-y-2 font-medium px-3 pb-4">
         <li>
             <a href="dashadmin.php" class="flex items-center p-2 text-white rounded-lg hover:bg-gray-100 hover:text-black group">

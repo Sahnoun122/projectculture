@@ -27,6 +27,7 @@ $pdo = $db->getConnection();
 
 $article = new  Article($pdo);
 $use= new  Visiteur($pdo);
+$auteur = new  Auteur($pdo);
 
 
 if (isset($_POST['id_user'])) {
@@ -38,6 +39,7 @@ if (isset($_POST['id_user'])) {
 
 $toutarticles = $article-> afficherstatu();
 
+$visitor = $auteur->getartisteData() ;
 
 
 
@@ -71,7 +73,11 @@ $toutarticles = $article-> afficherstatu();
 <aside id="default-sidebar" class="fixed top-0 left-0 z-40 w-80 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
     <div class="h-full overflow-y-auto bg-black">
 
-
+    <div class="flex flex-col items-center mt-6 -mx-2">
+        <img class="object-cover w-24 h-24 mx-2 rounded-full" src="<?php echo $visitor['profile'] ?>" alt="avatar">
+        <h4 class="mx-2 mt-2 font-medium" style="color: white;"><?php echo $visitor['Nom'] ?></h4>
+        <p class="mx-2 mt-1 text-sm font-medium" style="color: white;"><?php echo $_SESSION['email']?></p>
+    </div>
 
   
 

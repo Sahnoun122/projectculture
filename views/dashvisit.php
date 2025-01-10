@@ -9,6 +9,8 @@ if (!isset($_SESSION['id_user']) || !isset($_SESSION['role']) || $_SESSION['role
 
 require_once '../classe/classe.php';
 require_once '../database/db.php';
+require_once '../classe/visiteur.php';
+
 require_once '../phpmailer/mail.php';
 $mail->setFrom('khadijasahnoun70@gmail.com', 'khadija sahnoun');
 
@@ -18,6 +20,8 @@ $admin_id = $_SESSION['id_user'];
 $db = new DbConnection();
 $pdo = $db->getConnection();
 
+$user = new User($pdo);
+$visiteur = new Visiteur($pdo);
 
 $sql = "SELECT Nom FROM category";
 $stmt = $pdo->prepare($sql);
@@ -38,6 +42,9 @@ $stmt2 = $pdo->prepare($sql2);
 $stmt2->execute();
 
 $user = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+
+
+$visitor = $visiteur->getUserData();
 
 
 ?>
@@ -70,10 +77,11 @@ $user = $stmt2->fetchAll(PDO::FETCH_ASSOC);
     <div class="h-full overflow-y-auto bg-black">
     <!-- Sidebar Menu -->
     <div class="flex flex-col items-center mt-6 -mx-2">
-        <img class="object-cover w-24 h-24 mx-2 rounded-full" src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="avatar">
-        <h4 class="mx-2 mt-2 font-medium" style="color: white;"><?php echo $user['Nom'] ?></h4>
+        <img class="object-cover w-24 h-24 mx-2 rounded-full" src="<?php echo $visitor['profile'] ?>" alt="avatar">
+        <h4 class="mx-2 mt-2 font-medium" style="color: white;"><?php echo $visitor['Nom'] ?></h4>
         <p class="mx-2 mt-1 text-sm font-medium" style="color: white;"><?php echo $_SESSION['email']?></p>
     </div>
+
 
       <ul class="space-y-2 font-medium px-3 pb-4">
        
