@@ -153,7 +153,7 @@ $result1 = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 <div class="p-8 sm:ml-80">
     <h2 class="text-4xl font-semibold text-black mb-6">Articles</h2>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12" id="articlesContainer" style="align-items: start;">
+    <div class="" id="articlesContainer" style="align-items: start;">
         <?php
         $activities_sql = "SELECT articles.*, category.nom  AS category_name FROM articles JOIN category ON articles.id_category = category.id_category ";
         
@@ -162,20 +162,19 @@ $result1 = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($activities as $activity):
         ?>
-        <div class="bg-black shadow-lg rounded-lg overflow-hidden" data-category="<?php echo htmlspecialchars($activity['id_category'], ENT_QUOTES, 'UTF-8'); ?>" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+        <div class="" data-category="<?php echo htmlspecialchars($activity['id_category'], ENT_QUOTES, 'UTF-8'); ?>" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
             <div class="p-6">
-                <h3 class="text-4xl mb-4 font-semibold text-white"><?php echo htmlspecialchars($activity['Titre'], ENT_QUOTES, 'UTF-8'); ?></h3>
-                <p class="text-lg text-white"><?php echo htmlspecialchars($activity['Contenu'], ENT_QUOTES, 'UTF-8'); ?></p>
+                <h3 class="text-4xl mb-4 font-semibold text-black"><?php echo htmlspecialchars($activity['Titre'], ENT_QUOTES, 'UTF-8'); ?></h3>
+                <p class="text-lg text-black"><?php echo htmlspecialchars($activity['Contenu'], ENT_QUOTES, 'UTF-8'); ?></p>
                 <a href="details.php"><img src="<?php echo htmlspecialchars($activity['Image'], ENT_QUOTES, 'UTF-8'); ?>" alt="Activity Photo" class="w-full h-48 object-cover">                </a>
-                <p class="text-lg text-white"><?php echo htmlspecialchars($activity['category_name'], ENT_QUOTES, 'UTF-8'); ?></p>
+                <p class="text-lg text-black"><?php echo htmlspecialchars($activity['category_name'], ENT_QUOTES, 'UTF-8'); ?></p>
 
-                <!-- <form method="POST"  action="modifierarticle.php">
+                <form method="POST"  action="modifierarticle.php">
                     <div class="flex items-center justify-center mt-4">
                         <button type="submit" name="delete" class="text-xl hover:scale-105" value="<?php echo htmlspecialchars($activity['id_article'], ENT_QUOTES, 'UTF-8'); ?>">🗑️</button>
                     </div>
-                    <button type="submit" name="modifie" value="<?php echo htmlspecialchars($activity['id_article'], ENT_QUOTES, 'UTF-8'); ?>" class="text-xl hover:scale-105">🔏</button>
 
-                </form> -->
+                </form>
                 <a href="modifierarticle.php?id=<?php echo htmlspecialchars($activity['id_article'], ENT_QUOTES, 'UTF-8'); ?>">🔏</a>
             </div>
 

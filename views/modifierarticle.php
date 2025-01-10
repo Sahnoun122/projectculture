@@ -11,7 +11,7 @@ if (!isset($_SESSION['id_user']) || !isset($_SESSION['role']) || $_SESSION['role
     exit;
 }
 
-echo  $_SESSION['id_user'];
+// echo  $_SESSION['id_user'];
 $db = new DbConnection();
 $pdo = $db->getConnection();
 
@@ -25,15 +25,17 @@ if (isset($_GET['id_user'])) {
     $id_auteur = null;
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['modifie'])) {
-    $id_article = $_GET['modifie'];
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $id_article = $_GET['id'];
 
     $article = $article->getid($id_article);
 
+    // print_r($article);
     if ($article) {
-        ?>
-     
-        <?php
+
+
+    // print_r($article);
+
     } else {
         echo "Article non trouvé.";
     }
@@ -53,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['modifie'])) {
 
     <div class="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow">
         <h2 class="text-2xl font-bold mb-6">Modifier Article</h2>
-        <form action="updateartile.php" method="get">
+        <form action="./updateartile.php" method="get">
             <input type="hidden" name="id_article" value="<?php echo htmlspecialchars($article['id_article']); ?>">
             <div class="mb-4">
                 <label for="titre" class="block text-gray-700 font-semibold">Titre:</label>
