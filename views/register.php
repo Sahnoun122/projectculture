@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     try {
-        $userId = $auth->register($nom, $prenom, $email, $Motdepasse, $role, $PROFILE );
+        $userId = $auth->register($nom, $prenom, $email, $Motdepasse, $role, $target_path );
 
         // Envoi de l'email
         $mail->setFrom('khadijasahnoun46@gmail.com', 'khadija sahnoun');
