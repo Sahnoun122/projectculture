@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id_category = $_POST['id_category'];
     $id_tag = $_POST['id_tag'];
 
-    $articleManager->modifierArticle($id_article, $titre, $contenu, $image, $id_category, $id_tag);
+    $article->modifierArticle($id_article, $titre, $contenu, $image, $id_category, $id_tag);
 
     header("Location: addarticle.php");
     exit;

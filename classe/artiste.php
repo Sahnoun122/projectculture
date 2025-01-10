@@ -80,14 +80,23 @@
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
 
-       
-        public function getArticleById($id_article) {
-            $id_user = $_SESSION['id_article'];
-            $query = "SELECT * FROM articles WHERE id_article = :id_article";
-            $stmt = $this->db->prepare($query);
-            $stmt->bindParam(":id_article", $id_article, PDO::PARAM_INT);
-            $stmt->execute([':id_article' => $id_user]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        }
 
+        public function getid($id_article) {
+            try {
+                $sql = "SELECT * FROM articles WHERE id_article = :id_article";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bindParam(":id_article", $id_article, PDO::PARAM_INT);
+                $stmt->execute();
+                $article = $stmt->fetch(PDO::FETCH_ASSOC);
+                
+                if (!$article) {
+                    echo "Article non trouvé.";
+                }
+                
+                return $article;
+            } catch (PDOException $e) {
+                return "Erreur lors de la récupération de l'article : " . $e->getMessage();
+            }
+        }
+        
     }

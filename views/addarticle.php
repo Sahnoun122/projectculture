@@ -169,7 +169,7 @@ $result1 = $stmt1->fetchAll(PDO::FETCH_ASSOC);
                 <a href="details.php"><img src="<?php echo htmlspecialchars($activity['Image'], ENT_QUOTES, 'UTF-8'); ?>" alt="Activity Photo" class="w-full h-48 object-cover">                </a>
                 <p class="text-lg text-white"><?php echo htmlspecialchars($activity['category_name'], ENT_QUOTES, 'UTF-8'); ?></p>
 
-                <form method="POST" >
+                <form method="POST" action="modifierarticle.php">
                     <div class="flex items-center justify-center mt-4">
                         <button type="submit" name="delete" class="text-xl hover:scale-105" value="<?php echo htmlspecialchars($activity['id_article'], ENT_QUOTES, 'UTF-8'); ?>">🗑️</button>
                     </div>
